@@ -1,0 +1,165 @@
+/* === Estilos generales === */
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f2f2f2;
+}
+
+/* === Contenedor principal === */
+.container {
+    display: flex;
+    justify-content: flex-end;      /* Panel a la derecha */
+    align-items: flex-start;        /* Alineado arriba para controlar márgenes */
+    height: 100%;
+    padding: 40px;
+}
+
+/* === Panel de login === */
+form {
+    position: relative;
+    background: #fff;
+    width: 45%;
+    min-width: 400px;
+    max-width: 600px;
+    min-height: 70vh;
+    padding: 60px 50px;
+    border-radius: 20px;
+    box-shadow: 0 0 35px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    text-align: center;
+    margin-top: 40px;      /* 👈 espacio arriba */
+    margin-bottom: 40px;   /* 👈 espacio abajo */
+}
+
+/* === Avatar === */
+.imgcontainer {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+
+.avatar {
+    width: 100px;
+    border-radius: 50%;
+    border: 3px solid #04AA6D;
+}
+
+/* === Título === */
+.login-title {
+    font-size: 40px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* === Labels === */
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+/* === Inputs === */
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 18px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+    border-color: #04AA6D;
+    outline: none;
+}
+
+/* === Checkbox === */
+.remember-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    font-size: 16px;
+}
+
+/* === Botón de login === */
+button {
+    width: 100%;
+    padding: 18px;
+    background-color: #04AA6D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #039f63;
+}
+
+/* === Error === */
+.error {
+    color: red;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+}
+
+/* === Links inferiores === */
+.bottom-container {
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+.bottom-container a {
+    color: #04AA6D;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 5px;
+}
+
+.bottom-container a:hover {
+    text-decoration: underline;
+}
+
+/* === Responsivo === */
+@media (max-width: 900px) {
+    .container {
+        justify-content: center; /* Centra en pantallas pequeñas */
+        align-items: center;
+        padding: 20px;
+    }
+
+    form {
+        width: 90%;
+        min-height: 75vh;
+        padding: 40px 30px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        width: 80px;
+    }
+
+    .login-title {
+        font-size: 32px;
+    }
+}
