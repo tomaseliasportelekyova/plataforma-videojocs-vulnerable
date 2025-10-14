@@ -1,22 +1,20 @@
 <?php
 session_start();
 
-// Credenciales de ejemplo — en producción deberían venir de una base de datos
-$valid_user = "admin";
+$valid_email = "admin@example.com";
 $valid_pass = "12345";
-
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $user = trim($_POST['user'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $pass = trim($_POST['pass'] ?? '');
 
-    if ($user === $valid_user && $pass === $valid_pass) {
-        $_SESSION['username'] = $user;
-        header("Location: dashboard.php"); // Redirige al panel principal
+    if ($email === $valid_email && $pass === $valid_pass) {
+        $_SESSION['email'] = $email;
+        header("Location: dashboard.php");
         exit();
     } else {
-        $error = "Usuario o contraseña incorrectos.";
+        $error = "Email o contraseña incorrectos.";
     }
 }
 ?>
@@ -27,12 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- 👇 Importa tu archivo CSS -->
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+    <!-- TÍTULO CENTRADO -->
+    <h1 class="login-title">Login</h1>
+
     <div class="imgcontainer">
         <img src="img_avatar2.png" alt="Avatar" class="avatar">
     </div>
@@ -41,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="error"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
-    <label for="user"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="user" required>
-
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter email" name="email" required>
+    <br>
     <label for="pass"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="pass" required>
 
