@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($email === $valid_email && $pass === $valid_pass) {
         $_SESSION['email'] = $email;
-        header("Location: dashboard.php");
+        header("Location: registre.php");
         exit();
     } else {
         $error = "Email o contraseña incorrectos.";
@@ -22,42 +22,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../frontend/assets/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="../frontend/assets/css/style.css" />
 </head>
 <body>
+  <div class="container">
+    <!-- NUEVO CONTENEDOR CON FONDO BLANCO Y SOMBREADO -->
+    <div class="card">
+      <!-- Panel de imagen -->
+      <div class="image_login">
+        <img src="../frontend/imatges/videojuegos.png" alt="Panel decorativo" />
+      </div>
 
-<form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-    <!-- TÍTULO CENTRADO -->
-    <h1 class="login-title">Login</h1>
+      <!-- Panel de login -->
+      <form class="login-panel" method="post" action="#">
+        <div class="form-header">
+          <div class="header-image">
+            <img src="../frontend/imatges/pacman.png" />
+          </div>
+          <h1 class="login-title">Login</h1>
+        </div>
 
-    <div class="imgcontainer">
-        <img src="img_avatar2.png" alt="Avatar" class="avatar">
+        <div class="form-body">
+          <div class="form-field">
+            <label for="email"><b>Email</b></label>
+            <input id="email" type="text" name="email" placeholder="Introduce tu email" required />
+          </div>
+
+          <div class="form-field">
+            <label for="pass"><b>Contraseña</b></label>
+            <input id="pass" type="password" name="pass" placeholder="Introduce tu contraseña" required />
+          </div>
+
+          <label class="remember-label">
+            <input type="checkbox" name="remember" checked /> Recordarme
+          </label>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit">Entrar</button>
+          <div class="bottom-container">
+            <a href="#">¿Olvidaste la contraseña?</a>
+            <a href="registre.php">Crear cuenta</a>
+          </div>
+        </div>
+      </form>
     </div>
-
-    <?php if ($error): ?>
-        <div class="error"><?php echo htmlspecialchars($error); ?></div>
-    <?php endif; ?>
-
-    <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter email" name="email" required>
-    <br>
-    <label for="pass"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="pass" required>
-
-    <label class="remember-label">
-        <input type="checkbox" name="remember" checked> Remember me
-    </label>
-
-    <button type="submit">Login</button>
-
-    <div class="bottom-container">
-        <a href="#">Forgot password?</a> | 
-        <a href="register.php">Create account</a>
-    </div>
-</form>
-
+  </div>
 </body>
 </html>
