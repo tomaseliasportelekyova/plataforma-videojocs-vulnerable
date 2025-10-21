@@ -1,11 +1,7 @@
 <?php
 session_start();
-
-// Recogemos cualquier mensaje que nos pueda llegar desde otras páginas
 $success_message = $_SESSION['success'] ?? '';
 $error_message = $_SESSION['error'] ?? '';
-
-// Limpiamos los mensajes para que no se muestren de nuevo si se recarga la página
 unset($_SESSION['success']);
 unset($_SESSION['error']);
 ?>
@@ -15,47 +11,44 @@ unset($_SESSION['error']);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
-  <link rel="stylesheet" href="../frontend/assets/css/style.css" />
+  <title>Login - Shit game</title>
+  <link rel="stylesheet" href="../frontend/assets/css/style_login.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <div class="image_login">
-        <img src="../frontend/imatges/videojuegos.png" alt="Panel decorativo" />
-      </div>
 
-      <form class="login-panel" method="post" action="./funcions/validacio_login.php">
+  <div class="background-container">
+    <img id="background-gif" src="" alt="Fondo animado">
+  </div>
+
+  <div class="login-container">
+
+    <div class="login-panel">
+      <canvas id="interactive-dots-canvas"></canvas>
+
+      <form class="login-form" method="post" action="./funcions/validacio_login.php">
         <div class="form-header">
-          <div class="header-image">
-            <img src="../frontend/imatges/pacman.png" />
-          </div>
-          <h1 class="login-title">Login</h1>
+          <h1>Bienvenido a Shit Games</h1>
+          <p>Inicia sesión para acceder</p>
         </div>
 
-        <?php if ($success_message): ?><p style="color: green; text-align: center;"><?php echo $success_message; ?></p><?php endif; ?>
-        <?php if ($error_message): ?><p style="color: red; text-align: center;"><?php echo $error_message; ?></p><?php endif; ?>
+        <?php if ($error_message): ?><p class="form-message error"><?php echo $error_message; ?></p><?php endif; ?>
 
         <div class="form-body">
-          <div class="form-field">
-            <label for="email"><b>Email</b></label>
-            <input id="email" type="text" name="email" placeholder="Introduce tu email" required />
-          </div>
-
-          <div class="form-field">
-            <label for="pass"><b>Contraseña</b></label>
-            <input id="pass" type="password" name="pass" placeholder="Introduce tu contraseña" required />
-          </div>
+          <input id="email" type="email" name="email" required placeholder="Email">
+          <input id="pass" type="password" name="pass" required placeholder="Contraseña">
         </div>
 
         <div class="form-footer">
           <button type="submit">Entrar</button>
-          <div class="bottom-container">
-            <a href="registre.php">Crear cuenta</a>
+          <div class="bottom-link">
+            <span>¿No tienes cuenta? <a href="registre.php">Regístrate</a></span>
           </div>
         </div>
       </form>
     </div>
   </div>
+
+  <script src="../frontend/assets/js/interactive-dots_login.js"></script>
+  <script src="../frontend/assets/js/gif-rotator.js"></script>
 </body>
 </html>

@@ -1,9 +1,7 @@
-/* === DISEÑO ELEGANTE Y DINÁMICO PARA REGISTRO === */
+/* === DISEÑO FINAL Y REFINADO === */
 
-/* --- Fuentes e importaciones (opcional) --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-/* --- Estilos Globales y Fondo con Puntos --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,18 +9,37 @@
 }
 
 body {
-font-family: 'Inter', sans-serif;
-  overflow: hidden; /* Evita el scroll */
-  background-color: #f8f9fa; /* El fondo blanco/grisáceo que ya teníamos */
-
-  /* === LA MAGIA DE LOS PUNTOS === */
-  /* Usamos un radial-gradient para crear un círculo (punto) */
-  /* Lo hacemos muy pequeño (1px) y lo repetimos cada 20px */
-  background-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  background-color: #f8f9fa;
 }
 
-/* --- Contenedor Principal Split-Screen --- */
+/* --- Título Flotante --- */
+.overlay-title-container {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1rem 3rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.overlay-title-container h1 {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2rem;
+  color: #212529;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 0;
+}
+
+/* --- Layout Principal --- */
 .split-container {
   display: flex;
   width: 100vw;
@@ -32,50 +49,53 @@ font-family: 'Inter', sans-serif;
 /* --- Panel Izquierdo (Carrusel) --- */
 .left-panel {
   flex-basis: 50%;
-  position: relative; /* Contenedor para las formas diagonales */
+  position: relative;
   overflow: hidden;
-  background-color: #e9ecef;
+  background-color: #1a1a1a;
 }
 
-.carousel-shape {
+.background-carousel-container {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: background-image 1s ease-in-out;
+  transition: opacity 2.5s ease-in-out;
 }
 
-/* === NUEVOS CLIP-PATHS PARA TRES TERCIOS DIAGONALES === */
-
-/* Tercio superior */
-#carousel-1 {
-  clip-path: polygon(0 0, 100% 0, 0 66.66%); 
-  z-index: 3;
+#slide-b {
+  opacity: 0;
 }
 
-/* Tercio central */
-#carousel-2 {
-  clip-path: polygon(0 66.66%, 100% 0, 100% 33.33%, 0 100%);
-  z-index: 2;
-}
-
-/* Tercio inferior */
-#carousel-3 {
-  clip-path: polygon(100% 33.33%, 100% 100%, 0 100%);
-  z-index: 1;
-}
-
-/* --- Panel Derecho (Formulario) --- */
+/* --- Panel Derecho (Formulario y Puntos) --- */
 .right-panel {
   flex-basis: 50%;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4rem;
 }
 
+#interactive-dots-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
 .registro-form {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 400px;
 }
@@ -100,7 +120,6 @@ font-family: 'Inter', sans-serif;
   gap: 1rem;
 }
 
-/* Agrupamos nombre y apellidos en una línea */
 .input-group {
   display: flex;
   gap: 1rem;
@@ -111,35 +130,50 @@ font-family: 'Inter', sans-serif;
 
 input {
   width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
+  padding: 0.9rem 1rem;
   font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #212529;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
+
+input::placeholder {
+  color: #495057;
+}
+
 input:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
 
 .form-footer {
   margin-top: 2rem;
 }
+
 button {
   width: 100%;
   padding: 0.9rem;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 8px;
   background-color: #212529;
   color: white;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
+
 button:hover {
-  background-color: #007bff;
+  background-color: #ffffff;
+  color: #212529;
+  border-color: #212529;
 }
 
 .bottom-link {
@@ -147,13 +181,23 @@ button:hover {
   margin-top: 1.5rem;
   color: #6c757d;
 }
+
+/* === ESTILOS DEL ENLACE INFERIOR ACTUALIZADOS === */
 .bottom-link a {
   color: #007bff;
   text-decoration: none;
   font-weight: bold;
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease; /* Añadida transición para el color */
+  position: relative; /* Necesario para el desplazamiento */
+  left: 15px; /* Lo desplazamos 15px a la derecha */
 }
 
-/* Mensajes de error/éxito */
+.bottom-link a:hover {
+  transform: scale(1.1) translateY(-3px); /* Mantenemos el efecto de subir y agrandar */
+  text-decoration: underline; /* Añadimos el subrayado en el hover */
+}
+
 .form-message {
   padding: 0.8rem;
   border-radius: 8px;
@@ -162,68 +206,3 @@ button:hover {
 }
 .error { background-color: #f8d7da; color: #721c24; }
 .success { background-color: #d4edda; color: #155724; }
-
-/* === CSS MEJORADO PARA EL FUNDIDO CRUZADO (Cross-fade) === */
-
-.left-panel {
-  flex-basis: 50%;
-  position: relative;
-  overflow: hidden;
-  background-color: #1a1a1a; /* Un fondo oscuro por si las imágenes fallan */
-}
-
-.background-carousel-container {
-  width: 100%;
-  height: 100%;
-}
-
-.carousel-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  
-  /* LA MAGIA: Transición de opacidad muy suave y lenta */
-  transition: opacity 2.5s ease-in-out;
-}
-
-/* Por defecto, el slide de arriba (B) está oculto */
-#slide-b {
-  opacity: 0;
-}
-
-/* === AÑADIR AL FINAL DE style_registre.css === */
-
-/* --- Estilos para el Título Flotante --- */
-.overlay-title-container {
-  /* Posicionamiento: lo sacamos del flujo normal y lo ponemos arriba */
-  position: absolute;
-  top: 2rem; /* Lo separamos un poco de la parte superior */
-  left: 50%; /* Lo centramos horizontalmente */
-  transform: translateX(-50%);
-  z-index: 100; /* Un z-index alto para que esté por encima de todo */
-
-  /* Estilos del fondo "borroso" (frosted glass) */
-  background-color: rgba(255, 255, 255, 0.2); /* Un fondo blanco muy transparente */
-  backdrop-filter: blur(10px); /* ¡LA MAGIA! Esto desenfoca lo que hay detrás */
-  -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
-  
-  /* Otros estilos para que se vea bien */
-  padding: 1rem 3rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.overlay-title-container h1 {
-  /* Estilos del texto del título */
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 2rem;
-  color: #212529;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin: 0;
-}

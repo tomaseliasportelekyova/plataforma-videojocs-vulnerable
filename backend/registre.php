@@ -16,11 +16,6 @@ unset($_SESSION['success']);
 </head>
 <body>
 
-  <div class="overlay-title-container">
-    <h1>GameHub</h1>
-  </div>
-  <div class="split-container">
-
   <div class="split-container">
 
     <div class="left-panel">
@@ -31,10 +26,12 @@ unset($_SESSION['success']);
     </div>
 
     <div class="right-panel">
+      <canvas id="interactive-dots-canvas"></canvas>
+
       <form class="registro-form" method="post" action="./funcions/crear_usuari.php">
         <div class="form-header">
-          <h1>Crear Cuenta</h1>
-          <p>Únete a la comunidad de GameHub.</p>
+          <h1>Crear Cuenta En Shit Games</h1>
+          <p>Únete a la comunidad de Shit Games.</p>
         </div>
 
         <?php if ($error): ?><p class="form-message error"><?php echo $error; ?></p><?php endif; ?>
@@ -64,5 +61,6 @@ unset($_SESSION['success']);
   </div>
 
   <script src="../frontend/assets/js/carousel.js"></script>
+  <script src="../frontend/assets/js/interactive-dots.js"></script>
 </body>
 </html>
