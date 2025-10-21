@@ -1,22 +1,9 @@
 <?php
 session_start();
-
-$valid_email = "admin@example.com";
-$valid_pass = "12345";
-$error = "";
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = trim($_POST['email'] ?? '');
-    $pass = trim($_POST['pass'] ?? '');
-
-    if ($email === $valid_email && $pass === $valid_pass) {
-        $_SESSION['email'] = $email;
-        header("Location: registre.php");
-        exit();
-    } else {
-        $error = "Email o contraseña incorrectos.";
-    }
-}
+$error = $_SESSION['error'] ?? '';
+$success = $_SESSION['success'] ?? '';
+unset($_SESSION['error']);
+unset($_SESSION['success']);
 ?>
 
 <!DOCTYPE html>
@@ -24,55 +11,58 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registro</title>
+  <title>Registro - GameHub</title>
   <link rel="stylesheet" href="../frontend/assets/css/style_registre.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <form class="login-panel" method="post" action="#">
+
+  <div class="overlay-title-container">
+    <h1>GameHub</h1>
+  </div>
+  <div class="split-container">
+
+  <div class="split-container">
+
+    <div class="left-panel">
+      <div class="background-carousel-container">
+        <div class="carousel-slide" id="slide-a"></div>
+        <div class="carousel-slide" id="slide-b"></div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <form class="registro-form" method="post" action="./funcions/crear_usuari.php">
         <div class="form-header">
-          <div class="header-image">
-            <img src="../frontend/imatges/pacman.png" />
-          </div>
-          <h1 class="login-title">Registro</h1>
+          <h1>Crear Cuenta</h1>
+          <p>Únete a la comunidad de GameHub.</p>
         </div>
 
+        <?php if ($error): ?><p class="form-message error"><?php echo $error; ?></p><?php endif; ?>
+        <?php if ($success): ?><p class="form-message success"><?php echo $success; ?></p><?php endif; ?>
+
         <div class="form-body">
-          <div class="form-field">
-            <label for="nombre"><b>Nombre real</b></label>
-            <input id="nombre" type="text" name="nombre" placeholder="Introduce tu nombre" required />
+          <div class="input-group">
+            <input id="nom" type="text" name="nom" required placeholder="Nombre">
+            <input id="cognom" type="text" name="cognom" required placeholder="Apellidos">
           </div>
-
-          <div class="form-field">
-            <label for="apellidos"><b>Apellidos</b></label>
-            <input id="apellidos" type="text" name="apellidos" placeholder="Introduce tus apellidos" required />
-          </div>
-
-          <div class="form-field">
-            <label for="fecha_nacimiento"><b>Fecha de nacimiento</b></label>
-            <input id="fecha_nacimiento" type="date" name="fecha_nacimiento" required />
-          </div>
-
-          <div class="form-field">
-            <label for="usuario"><b>Nombre de usuario</b></label>
-            <input id="usuario" type="text" name="usuario" placeholder="Elige un nombre de usuario" required />
-          </div>
-
-          <div class="form-field">
-            <label for="pass"><b>Contraseña</b></label>
-            <input id="pass" type="password" name="pass" placeholder="Crea una contraseña" required />
-          </div>
+          <input id="nickname" type="text" name="nickname" required placeholder="Nombre de usuario">
+          <input id="email" type="email" name="email" required placeholder="Email">
+          <input id="data_naixement" type="date" name="data_naixement" required>
+          <input id="pass" type="password" name="pass" required placeholder="Contraseña">
+          <input id="confirm_password" type="password" name="confirm_password" required placeholder="Confirmar contraseña">
         </div>
 
         <div class="form-footer">
           <button type="submit">Registrarse</button>
-          <div class="bottom-container">
-            <a href="index.php">¿Ya tienes cuenta? Inicia sesión</a>
+          <div class="bottom-link">
+            <span>¿Ya tienes cuenta? <a href="login.php">Inicia sesión</a></span>
           </div>
         </div>
       </form>
     </div>
+
   </div>
+
+  <script src="../frontend/assets/js/carousel.js"></script>
 </body>
 </html>

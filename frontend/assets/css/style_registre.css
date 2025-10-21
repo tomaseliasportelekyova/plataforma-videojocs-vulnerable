@@ -1,196 +1,229 @@
+/* === DISEÑO ELEGANTE Y DINÁMICO PARA REGISTRO === */
+
+/* --- Fuentes e importaciones (opcional) --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+/* --- Estilos Globales y Fondo con Puntos --- */
 * {
   box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url(../../imatges/fondo.jpg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 48px;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-  max-width: 640px;
-  width: 100%;
-  height: auto;
   padding: 0;
 }
 
-.login-panel {
-  flex: 1 1 100%;
-  padding: 60px 40px;
+body {
+font-family: 'Inter', sans-serif;
+  overflow: hidden; /* Evita el scroll */
+  background-color: #f8f9fa; /* El fondo blanco/grisáceo que ya teníamos */
+
+  /* === LA MAGIA DE LOS PUNTOS === */
+  /* Usamos un radial-gradient para crear un círculo (punto) */
+  /* Lo hacemos muy pequeño (1px) y lo repetimos cada 20px */
+  background-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* --- Contenedor Principal Split-Screen --- */
+.split-container {
   display: flex;
-  flex-direction: column;
-  gap: 28px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* --- Panel Izquierdo (Carrusel) --- */
+.left-panel {
+  flex-basis: 50%;
+  position: relative; /* Contenedor para las formas diagonales */
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+.carousel-shape {
+  position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 1s ease-in-out;
+}
+
+/* === NUEVOS CLIP-PATHS PARA TRES TERCIOS DIAGONALES === */
+
+/* Tercio superior */
+#carousel-1 {
+  clip-path: polygon(0 0, 100% 0, 0 66.66%); 
+  z-index: 3;
+}
+
+/* Tercio central */
+#carousel-2 {
+  clip-path: polygon(0 66.66%, 100% 0, 100% 33.33%, 0 100%);
+  z-index: 2;
+}
+
+/* Tercio inferior */
+#carousel-3 {
+  clip-path: polygon(100% 33.33%, 100% 100%, 0 100%);
+  z-index: 1;
+}
+
+/* --- Panel Derecho (Formulario) --- */
+.right-panel {
+  flex-basis: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+}
+
+.registro-form {
+  width: 100%;
+  max-width: 400px;
 }
 
 .form-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  padding-bottom: 6px;
+  margin-bottom: 2rem;
+  text-align: left;
 }
-
-.login-title {
-  font-size: 50px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  background: linear-gradient(90deg, #16e7ba, #16b5ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  margin: 0;
+.form-header h1 {
+  font-size: 2.5rem;
+  color: #212529;
+  margin-bottom: 0.5rem;
 }
-
-.header-image img {
-  width: 17%;
-  padding-bottom: 15px;
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
-  user-select: none;
+.form-header p {
+  font-size: 1rem;
+  color: #6c757d;
 }
 
 .form-body {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 1rem;
+}
+
+/* Agrupamos nombre y apellidos en una línea */
+.input-group {
+  display: flex;
+  gap: 1rem;
+}
+.input-group input {
+  width: 50%;
+}
+
+input {
   width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
-  justify-content: center;
-  padding-right: 6px;
-  overflow: visible;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
 .form-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
+  margin-top: 2rem;
 }
-
-.form-field {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-label {
-  font-weight: 600;
-  font-size: 15px;
-  color: #04a582;
-  letter-spacing: 1.2px;
-  text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.2);
-  text-align: left;
-  margin: 0;
-}
-
-input[type=text],
-input[type=password],
-input[type=email],
-input[type=date] {
-  width: 100%;
-  padding: 14px 16px;
-  font-size: 16px;
-  border: 3px solid #d3d3d3;
-  border-radius: 10px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  background: #fff;
-}
-
-input:focus {
-  border-color: #04AA6D;
-  box-shadow: 0 4px 12px rgba(4,170,109,0.08);
-  outline: none;
-}
-
 button {
   width: 100%;
-  padding: 14px 18px;
-  background-color: #04AA6D;
-  color: #fff;
+  padding: 0.9rem;
   border: none;
-  border-radius: 12px;
-  font-size: 17px;
+  border-radius: 8px;
+  background-color: #212529;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  font-weight: 700;
-  transition: background-color 0.18s ease, transform 0.08s ease;
+  transition: background-color 0.3s ease;
 }
-
 button:hover {
-  background-color: #039f63;
+  background-color: #007bff;
 }
 
-button:active {
-  transform: translateY(1px);
+.bottom-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #6c757d;
 }
-
-.bottom-container {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  font-size: 14px;
-  color: #444;
-}
-
-.bottom-container a {
-  color: #04AA6D;
+.bottom-link a {
+  color: #007bff;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
 }
 
-.bottom-container a:hover {
-  text-decoration: underline;
+/* Mensajes de error/éxito */
+.form-message {
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.error { background-color: #f8d7da; color: #721c24; }
+.success { background-color: #d4edda; color: #155724; }
+
+/* === CSS MEJORADO PARA EL FUNDIDO CRUZADO (Cross-fade) === */
+
+.left-panel {
+  flex-basis: 50%;
+  position: relative;
+  overflow: hidden;
+  background-color: #1a1a1a; /* Un fondo oscuro por si las imágenes fallan */
 }
 
-@media (max-width: 900px) {
-  .container {
-    padding: 20px;
-    height: auto;
-  }
+.background-carousel-container {
+  width: 100%;
+  height: 100%;
+}
 
-  .card {
-    padding: 0;
-    border-radius: 20px;
-  }
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  
+  /* LA MAGIA: Transición de opacidad muy suave y lenta */
+  transition: opacity 2.5s ease-in-out;
+}
 
-  .login-panel {
-    padding: 40px 20px;
-  }
+/* Por defecto, el slide de arriba (B) está oculto */
+#slide-b {
+  opacity: 0;
+}
 
-  .form-body,
-  .form-footer {
-    max-width: 100%;
-  }
+/* === AÑADIR AL FINAL DE style_registre.css === */
+
+/* --- Estilos para el Título Flotante --- */
+.overlay-title-container {
+  /* Posicionamiento: lo sacamos del flujo normal y lo ponemos arriba */
+  position: absolute;
+  top: 2rem; /* Lo separamos un poco de la parte superior */
+  left: 50%; /* Lo centramos horizontalmente */
+  transform: translateX(-50%);
+  z-index: 100; /* Un z-index alto para que esté por encima de todo */
+
+  /* Estilos del fondo "borroso" (frosted glass) */
+  background-color: rgba(255, 255, 255, 0.2); /* Un fondo blanco muy transparente */
+  backdrop-filter: blur(10px); /* ¡LA MAGIA! Esto desenfoca lo que hay detrás */
+  -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
+  
+  /* Otros estilos para que se vea bien */
+  padding: 1rem 3rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.overlay-title-container h1 {
+  /* Estilos del texto del título */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2rem;
+  color: #212529;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 0;
 }

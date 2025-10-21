@@ -1,7 +1,7 @@
 <?php
 //db_mysqli.php
 // Dades de connexió
-$host = "IP_DE_LA_VM";
+$host = "172.18.33.241"; // O también puedes usar "localhost"
 $user = "plataforma_user";
 $password = "123456789a";
 $database = "plataforma_videojocs";
@@ -13,5 +13,3 @@ $conn = new mysqli($host, $user, $password, $database);
 if ($conn->connect_error) {
     die("Error de connexió: " . $conn->connect_error);
 }
-
-echo "La connexió a la BD s'ha realitzat amb èxit! ";

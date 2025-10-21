@@ -1,22 +1,13 @@
 <?php
 session_start();
 
-$valid_email = "admin@example.com";
-$valid_pass = "12345";
-$error = "";
+// Recogemos cualquier mensaje que nos pueda llegar desde otras páginas
+$success_message = $_SESSION['success'] ?? '';
+$error_message = $_SESSION['error'] ?? '';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = trim($_POST['email'] ?? '');
-    $pass = trim($_POST['pass'] ?? '');
-
-    if ($email === $valid_email && $pass === $valid_pass) {
-        $_SESSION['email'] = $email;
-        header("Location: registre.php");
-        exit();
-    } else {
-        $error = "Email o contraseña incorrectos.";
-    }
-}
+// Limpiamos los mensajes para que no se muestren de nuevo si se recarga la página
+unset($_SESSION['success']);
+unset($_SESSION['error']);
 ?>
 
 <!DOCTYPE html>
@@ -29,21 +20,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
   <div class="container">
-    <!-- NUEVO CONTENEDOR CON FONDO BLANCO Y SOMBREADO -->
     <div class="card">
-      <!-- Panel de imagen -->
       <div class="image_login">
         <img src="../frontend/imatges/videojuegos.png" alt="Panel decorativo" />
       </div>
 
-      <!-- Panel de login -->
-      <form class="login-panel" method="post" action="#">
+      <form class="login-panel" method="post" action="./funcions/validacio_login.php">
         <div class="form-header">
           <div class="header-image">
             <img src="../frontend/imatges/pacman.png" />
           </div>
           <h1 class="login-title">Login</h1>
         </div>
+
+        <?php if ($success_message): ?><p style="color: green; text-align: center;"><?php echo $success_message; ?></p><?php endif; ?>
+        <?php if ($error_message): ?><p style="color: red; text-align: center;"><?php echo $error_message; ?></p><?php endif; ?>
 
         <div class="form-body">
           <div class="form-field">
@@ -55,16 +46,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <label for="pass"><b>Contraseña</b></label>
             <input id="pass" type="password" name="pass" placeholder="Introduce tu contraseña" required />
           </div>
-
-          <label class="remember-label">
-            <input type="checkbox" name="remember" checked /> Recordarme
-          </label>
         </div>
 
         <div class="form-footer">
           <button type="submit">Entrar</button>
           <div class="bottom-container">
-            <a href="#">¿Olvidaste la contraseña?</a>
             <a href="registre.php">Crear cuenta</a>
           </div>
         </div>
