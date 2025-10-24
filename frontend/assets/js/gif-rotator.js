@@ -1,6 +1,5 @@
 // En frontend/assets/js/gif-rotator.js
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => { // Marcamos la función como async
     const gifElement = document.getElementById('background-gif');
     if (!gifElement) return;
 
@@ -13,26 +12,51 @@ document.addEventListener('DOMContentLoaded', () => {
         // Añade aquí todos los GIFs que quieras
     ];
 
-    // --- El resto del código no necesita cambios ---
+// --- FUNCIÓN DE PRECARGA PARA GIFs ---
+    function preloadGifs(urls) {
+        console.log("Precargando GIFs...");
+        const promises = urls.map(url => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(url); // Resuelve cuando el GIF se carga
+                img.onerror = () => {
+                    console.warn(`Error al cargar GIF: ${url}. Se omitirá.`);
+                    resolve(null); // Resuelve con null si hay error
+                };
+                img.src = url;
+            });
+        });
+        // Espera a que todos los GIFs se carguen (o fallen)
+        return Promise.all(promises);
+    }
+
+    // --- INICIO DE LA LÓGICA ---
+    
+    // 1. Precargamos los GIFs y filtramos los que fallaron
+    const loadedGifUrls = await preloadGifs(gifSources);
+    const validGifUrls = loadedGifUrls.filter(url => url !== null);
+
+    if (validGifUrls.length === 0) {
+        console.error("No se pudo cargar ningún GIF válido.");
+        return; // Detenemos si no hay GIFs
+    }
+    
+    console.log(`GIFs cargados: ${validGifUrls.length}. Iniciando rotación...`);
 
     let currentGifIndex = 0;
 
     // Función para cambiar el GIF
     function changeGif() {
-        if (gifSources.length === 0) return; // No hacer nada si no hay GIFs
-        
-        // Pasamos al siguiente GIF en la lista
-        currentGifIndex = (currentGifIndex + 1) % gifSources.length;
+        // Pasamos al siguiente GIF en la lista VÁLIDA
+        currentGifIndex = (currentGifIndex + 1) % validGifUrls.length;
         
         // Cambiamos la fuente del <img>
-        gifElement.src = gifSources[currentGifIndex];
+        gifElement.src = validGifUrls[currentGifIndex];
     }
 
-    // Establecemos el primer GIF al cargar la página
-    if (gifSources.length > 0) {
-        gifElement.src = gifSources[0];
-    }
+    // Establecemos el primer GIF
+    gifElement.src = validGifUrls[0];
 
-    // Cambiamos de GIF cada 10 segundos (10000 milisegundos)
+    // Cambiamos de GIF cada 10 segundos (ajusta si es necesario)
     setInterval(changeGif, 10000);
 });

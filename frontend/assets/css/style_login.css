@@ -145,12 +145,12 @@ body {
 .login-form .bottom-link {
   text-align: center;
   margin-top: 1.5rem;
-  color: #d1d1d1;
+  color: #81868b;
 }
 
 /* === 2. ENLACE "REGÍSTRATE" MÁS DESPLAZADO === */
 .login-form .bottom-link a {
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
