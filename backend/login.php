@@ -2,8 +2,7 @@
 session_start();
 $success_message = $_SESSION['success'] ?? '';
 $error_message = $_SESSION['error'] ?? '';
-unset($_SESSION['success']);
-unset($_SESSION['error']);
+unset($_SESSION['success'], $_SESSION['error']);
 ?>
 
 <!DOCTYPE html>
@@ -11,17 +10,15 @@ unset($_SESSION['error']);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Shit game</title>
+  <title>Login - Shit Game</title>
   <link rel="stylesheet" href="../frontend/assets/css/style_login.css" />
 </head>
 <body>
-
   <div class="background-container">
     <img id="background-gif" src="" alt="Fondo animado">
   </div>
 
   <div class="login-container">
-
     <div class="login-panel">
       <canvas id="interactive-dots-canvas"></canvas>
 
@@ -31,7 +28,9 @@ unset($_SESSION['error']);
           <p>Inicia sesión para acceder</p>
         </div>
 
-        <?php if ($error_message): ?><p class="form-message error"><?php echo $error_message; ?></p><?php endif; ?>
+        <?php if ($error_message): ?>
+          <p class="form-message error"><?php echo $error_message; ?></p>
+        <?php endif; ?>
 
         <div class="form-body">
           <input id="email" type="email" name="email" required placeholder="Email">

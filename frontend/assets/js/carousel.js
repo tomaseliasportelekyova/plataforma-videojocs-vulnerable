@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const slideB = document.getElementById('slide-b');
 
   const allImageUrls = [
-    '../frontend/imatges/imagenes_registro/A-Super-Mario-Bros-Level.png',
-    '../frontend/imatges/imagenes_registro/eurogamer-zjp1vx.webp',
-    '../frontend/imatges/imagenes_registro/Hollow-Knight.jpg',
-    '../frontend/imatges/imagenes_registro/videojuegos.png',
-    '../frontend/imatges/imagenes_registro/fondo.jpg',
+    '../frontend/imatges/imagenes_registro/cod6.png',
+    '../frontend/imatges/imagenes_registro/gta5.webp',
+    '../frontend/imatges/imagenes_registro/elden_ring.jpg',
+    '../frontend/imatges/imagenes_registro/death_stranding.png',
+    '../frontend/imatges/imagenes_registro/satisfactory.jpg',
   ];
 
   // --- FUNCIÓN DE PRECARGA (La mantenemos, es una buena práctica) ---

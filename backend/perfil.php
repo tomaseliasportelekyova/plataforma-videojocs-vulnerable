@@ -1,21 +1,17 @@
 <?php
 session_start();
 
-// Verificar sesión activa
 if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     exit();
 }
 
-// Conexión a la base de datos
 $conexion = new mysqli('localhost', 'plataforma_user', '123456789a', 'plataforma_videojocs');
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
 $email = $_SESSION['email'];
-
-// Obtener datos del usuario
 $sql = "SELECT * FROM usuaris WHERE email = ?";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("s", $email);
@@ -30,13 +26,12 @@ if (!$user) {
 
 $nickname = htmlspecialchars($user['nickname']);
 $password = htmlspecialchars($user['password_hash']);
-$photo = isset($user['photo']) ? htmlspecialchars($user['photo']) : '../frontend/imatges/default_user.png';
+$photo = isset($user['photo']) ? htmlspecialchars($user['photo']) : '../frontend/imatges/users/default_user.png';
 
-// Procesar actualización
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_profile'])) {
         if (isset($_FILES['nueva_foto']) && $_FILES['nueva_foto']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = '../frontend/imatges/';
+            $upload_dir = '../frontend/imatges/users/';
             $filename = basename($_FILES['nueva_foto']['name']);
             $target_file = $upload_dir . $filename;
             move_uploaded_file($_FILES['nueva_foto']['tmp_name'], $target_file);
@@ -71,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!-- HTML del perfil -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
