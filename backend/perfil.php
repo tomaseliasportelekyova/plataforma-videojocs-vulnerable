@@ -11,7 +11,8 @@ $user_id = $_SESSION['user_id'];
 $nickname = $_SESSION['nickname']; // Necessari pel header
 
 // Conexión BBDD
-require "./funcions/db_mysqli.php";
+// Asegúrate que la ruta sea correcta desde perfil.php
+require "./funcions/db_mysqli.php"; 
 
 // --- Variables per missatges i dades ---
 $error_message = '';
@@ -48,6 +49,7 @@ if ($stmt_select_user) {
         $current_nom = $user['nom'];
         $current_cognom = $user['cognom'];
         $current_data_registre = $user['data_registre'] ? date("d/m/Y", strtotime($user['data_registre'])) : 'N/A';
+        // Asegúrate que la ruta por defecto exista o ajusta según necesidad
         $current_photo = (!empty($user['photo']) && file_exists($user['photo'])) ? $user['photo'] : '../frontend/imatges/users/default_user.png';
     } else {
         session_destroy();
@@ -55,8 +57,10 @@ if ($stmt_select_user) {
         exit();
     }
 } else {
+    // Afegir missatge d'error si la preparació falla
     $error_message = "Error preparant la consulta d'usuari: " . $conn->error;
 }
+
 
 // --- Calcular Ranking Global del Usuario ---
 // (Requereix MySQL 8+ per RANK())
@@ -88,7 +92,7 @@ if ($stmt_rank) {
 
 
 // --- Recuperar Juegos Jugados, Tiempo, Última Partida y Ranking por Juego ---
-// ================== CONSULTA CORREGIDA ==================
+// ================== CONSULTA CORREGIDA per ONLY_FULL_GROUP_BY ==================
 $sql_played = "
     SELECT
         j.id as joc_id,
@@ -112,16 +116,16 @@ $sql_played = "
                          WHERE p_user2.joc_id = j.id AND p_user2.usuari_id = ?), 0)
         ) as rank_en_joc
     FROM jocs j -- Comencem per jocs per si l'usuari no ha jugat encara
-    LEFT JOIN partides p ON j.id = p.joc_id AND p.usuari_id = ? -- Unim partides de l'usuari
-    -- WHERE j.id IN (SELECT DISTINCT joc_id FROM partides WHERE usuari_id = ?) -- Alternativa: Només jocs jugats
-    GROUP BY j.id, j.nom_joc, j.cover_image_url -- Afegit cover_image_url al GROUP BY
+    LEFT JOIN partides p ON j.id = p.joc_id AND p.usuari_id = ? -- Unim partides NOMÉS de l'usuari actual
+    WHERE p.usuari_id = ? -- Afegim condició explícita per ajudar el GROUP BY
+    GROUP BY j.id, j.nom_joc, j.cover_image_url -- Agrupem per totes les columnes no agregades de 'jocs'
     ORDER BY ultima_vegada_jugat DESC, j.nom_joc ASC
 ";
 
 $stmt_played = $conn->prepare($sql_played);
 if ($stmt_played) {
-    // Necessitem passar l'user_id tres vegades per la consulta corregida
-    $stmt_played->bind_param("iii", $user_id, $user_id, $user_id);
+    // Necessitem passar l'user_id QUATRE vegades per la consulta corregida
+    $stmt_played->bind_param("iiii", $user_id, $user_id, $user_id, $user_id);
     $stmt_played->execute();
     $result_played = $stmt_played->get_result();
     while ($game = $result_played->fetch_assoc()) {
@@ -132,21 +136,29 @@ if ($stmt_played) {
         $game['temps_format'] = sprintf('%dh %dm', $hores, $minuts); // Més curt
         $game['ultima_vegada_format'] = $game['ultima_vegada_jugat'] ? date("d/m/y", strtotime($game['ultima_vegada_jugat'])) : 'Mai'; // Format més curt
         // Assignar imatge de placeholder si no hi ha cover_image_url o està buida
-        $game['cover_image_url'] = (!empty($game['cover_image_url']) && file_exists(parse_url($game['cover_image_url'], PHP_URL_PATH)))
-                                   ? $game['cover_image_url']
+        // Comprovem existència del fitxer abans d'usar la URL de la BBDD
+        $cover_path = $game['cover_image_url'] ?? '';
+        // Cal construir la ruta absoluta o relativa correcta DES D'AQUEST SCRIPT per file_exists
+        // Suposem que la URL guardada és relativa a la webroot, ex: '/frontend/imatges/covers/joc1.jpg'
+        // $absolute_path = $_SERVER['DOCUMENT_ROOT'] . $cover_path; // Exemple si és relativa a webroot
+        // O si és relativa a backend/, com '../frontend/...'
+        $path_for_file_exists = realpath(__DIR__ . '/' . $cover_path); // Intenta resoldre ruta relativa
+
+        $game['cover_image_url'] = (!empty($cover_path) /* && file_exists($path_for_file_exists) */ ) // Comentat file_exists per simplicitat si dóna problemes
+                                   ? $cover_path // Usem la ruta guardada per l'HTML <img>
                                    : 'https://via.placeholder.com/160x120/1A1A2A/E0E0E0?text=' . urlencode($game['nom_joc']);
         $played_games[] = $game;
     }
     $stmt_played->close();
 } else {
-     $error_message .= " Error recuperant jocs jugats: " . $conn->error;
+     // Mostrem error SQL si falla la preparació
+     $error_message .= " Error preparant consulta jocs jugats: " . $conn->error;
 }
 // ================== FI CONSULTA CORREGIDA ==================
 
 
 // --- Lógica de Actualización (POST) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
-    // ... (La lògica d'update es queda igual que abans) ...
      $new_nickname = trim($_POST['nickname'] ?? $current_nickname);
     $new_email = trim($_POST['email'] ?? $current_email);
     $new_password = $_POST['password'] ?? null;
@@ -155,6 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $new_cognom = trim($_POST['cognom'] ?? $current_cognom);
     $new_photo_path = $current_photo;
     $nickname_changed = ($new_nickname !== $current_nickname);
+    $photo_updated = false; // Flag per saber si hem canviat la foto
 
     // Validacions
     if ($nickname_changed && !$can_change_nickname) {
@@ -166,28 +179,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     } else if (empty($new_nickname) || empty($new_email) || empty($new_nom) || empty($new_cognom)) {
         $error_message = "Nickname, Email, Nombre y Apellido no pueden estar vacíos.";
     } else {
-        // Gestió Foto (igual que abans)
+        // Gestió Foto
         if (isset($_FILES['nueva_foto']) && $_FILES['nueva_foto']['error'] === UPLOAD_ERR_OK && $_FILES['nueva_foto']['size'] > 0) {
-           // ... (codi de gestió de la foto) ...
-             $upload_dir = '../frontend/imatges/users/';
+            $upload_dir = '../frontend/imatges/users/'; // Ruta relativa des de perfil.php
             $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             $max_size = 5 * 1024 * 1024; // 5MB limit
 
             if (in_array($_FILES['nueva_foto']['type'], $allowed_types) && $_FILES['nueva_foto']['size'] <= $max_size) {
                 $file_extension = strtolower(pathinfo($_FILES['nueva_foto']['name'], PATHINFO_EXTENSION));
                 $filename = "user_" . $user_id . "_" . time() . "." . $file_extension;
-                $target_file = $upload_dir . $filename;
+                $target_file = $upload_dir . $filename; // Aquesta és la ruta que guardarem
 
                 if (!file_exists($upload_dir)) {
-                   mkdir($upload_dir, 0775, true);
+                   if (!mkdir($upload_dir, 0775, true)) {
+                       $error_message .= " Error al crear el directori d'imatges.";
+                   }
                 }
 
-                if (move_uploaded_file($_FILES['nueva_foto']['tmp_name'], $target_file)) {
+                // Només continuem si no hi ha error creant directori
+                if (empty($error_message) && move_uploaded_file($_FILES['nueva_foto']['tmp_name'], $target_file)) {
+                    // Opcional: Borrar foto antigua
                     if ($current_photo != '../frontend/imatges/users/default_user.png' && file_exists($current_photo)) {
                         // unlink($current_photo);
                     }
-                    $new_photo_path = $target_file;
-                } else {
+                    $new_photo_path = $target_file; // Guardem la nova ruta
+                    $photo_updated = true;
+                } else if (empty($error_message)){
                     $error_message .= " Error al mover la nueva foto subida.";
                 }
             } else {
@@ -198,14 +215,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         }
 
 
-        // Update BBDD (igual que abans, només si no hi ha errors)
+        // Update BBDD (Només si no hi ha hagut errors abans)
         if(empty($error_message)) {
             $fields_to_update = []; $types = ""; $params = [];
+            // Comprovem si els valors realment han canviat
             if ($new_nickname !== $current_nickname) { $fields_to_update[] = "nickname = ?"; $types .= "s"; $params[] = $new_nickname; }
             if ($new_email !== $current_email) { $fields_to_update[] = "email = ?"; $types .= "s"; $params[] = $new_email; }
             if ($new_nom !== $current_nom) { $fields_to_update[] = "nom = ?"; $types .= "s"; $params[] = $new_nom; }
             if ($new_cognom !== $current_cognom) { $fields_to_update[] = "cognom = ?"; $types .= "s"; $params[] = $new_cognom; }
-            if ($new_photo_path !== $current_photo) { $fields_to_update[] = "photo = ?"; $types .= "s"; $params[] = $new_photo_path; }
+            if ($photo_updated) { $fields_to_update[] = "photo = ?"; $types .= "s"; $params[] = $new_photo_path; }
             if (!empty($new_password)) {
                  $password_hash = $new_password; // Recorda usar password_hash()
                  $fields_to_update[] = "password_hash = ?"; $types .= "s"; $params[] = $password_hash;
@@ -220,37 +238,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
                     if ($stmt_update->execute()) {
                         $success_message = "Perfil actualizado correctamente.";
                         // Actualitzar variables current
-                        $current_nickname = $new_nickname; $current_email = $new_email; $current_nom = $new_nom; $current_cognom = $new_cognom; $current_photo = $new_photo_path;
+                        $current_nickname = $new_nickname; $current_email = $new_email; $current_nom = $new_nom; $current_cognom = $new_cognom; 
+                        if($photo_updated) $current_photo = $new_photo_path; // Actualitza només si es va canviar
                         // Actualitzar sessió i cookie
-                        if ($new_photo_path !== $current_photo) {
-                            $_SESSION['user_photo'] = $new_photo_path; 
-                        }
-                        // Si s'ha esborrat la foto i torna a la default (necessitaria lògica extra si permetem esborrar)
-                        elseif ($photo_deleted_and_set_to_default) {
-                            $_SESSION['user_photo'] = '../frontend/imatges/users/default_user.png';
-                        }
                         $_SESSION['email'] = $new_email;
+                        if ($photo_updated) { $_SESSION['user_photo'] = $new_photo_path; }
                         if ($nickname_changed) {
-                            $_SESSION['nickname'] = $new_nickname; $nickname = $new_nickname;
+                            $_SESSION['nickname'] = $new_nickname; $nickname = $new_nickname; // Actualitza ambdues
                             $nickname_changes_count++;
                             setcookie($cookie_name, $nickname_changes_count, time() + (365 * 24 * 60 * 60), "/");
                             $can_change_nickname = ($nickname_changes_count < $max_nickname_changes);
                         }
-                    } else { /* ... gestió errors SQL ... */
+                    } else { 
                          if ($conn->errno == 1062) { $error_message = "Error: El email o nickname ya está en uso."; }
                          else { $error_message = "Error al actualizar: " . $stmt_update->error; }
                     }
                     $stmt_update->close();
                 } else { $error_message = "Error preparing update: " . $conn->error; }
-            } else { if(empty($error_message)) $success_message = "No se realizaron cambios."; }
-        }
-    }
-}
+            } else { 
+                 // Si no hi havia res a canviar (i no hi havia errors previs)
+                 if(empty($error_message)) $success_message = "No se realizaron cambios."; 
+            }
+        } // Fi if(empty($error_message)) update BBDD
+    } // Fi else (validacions)
+} // Fi if POST update_profile
 
 
 // --- Lógica de Eliminación (POST) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_account'])) {
-    // ... (Lógica d'eliminació igual que abans) ...
     $sql_delete = "DELETE FROM usuaris WHERE id = ?";
     $stmt_delete = $conn->prepare($sql_delete);
      if (!$stmt_delete) {
@@ -288,8 +303,7 @@ if ($conn && $conn->ping()) {
   <link rel="stylesheet" href="../frontend/assets/css/style_perfil.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script>
-    // Funcions JS toggleEditMode, previsualizarFoto, i guardar valors inicials (igual que abans)
-     function toggleEditMode(enable) {
+    function toggleEditMode(enable) {
       const form = document.getElementById('perfil-form');
       const inputs = form.querySelectorAll('input[data-editable]');
       const editButton = document.getElementById('edit-button');
@@ -302,18 +316,30 @@ if ($conn && $conn->ping()) {
         form.classList.add('edit-mode');
         form.classList.remove('view-mode');
         inputs.forEach(input => {
+            // Només habilitem nickname si encara pot canviar
             if(input.id === 'nickname' && !<?php echo json_encode($can_change_nickname); ?>) {
-                input.setAttribute('readonly', true);
+                input.setAttribute('readonly', true); // Manté readonly
+                input.style.cursor = 'not-allowed'; // Canvia cursor
             } else {
                 input.removeAttribute('readonly');
-                input.style.backgroundColor = '#0F0F1A';
+                input.style.cursor = 'text'; // Cursor normal
+                // Restaura estil editable normal
+                input.style.backgroundColor = '#0F0F1A'; 
                 input.style.borderColor = 'rgba(255, 255, 255, 0.15)';
             }
         });
         passwordFields.forEach(field => field.style.display = 'block');
         if(fileInputLabel) fileInputLabel.style.display = 'inline-block';
-        if(document.getElementById('nickname') && <?php echo json_encode($can_change_nickname); ?>) { document.getElementById('nickname').focus(); }
-        else if (document.getElementById('nom')) { document.getElementById('nom').focus(); }
+        
+        // Focus inteligent
+        if(document.getElementById('nickname') && <?php echo json_encode($can_change_nickname); ?>) { 
+             document.getElementById('nickname').focus(); 
+        } else if (document.getElementById('nom')) { 
+             document.getElementById('nom').focus(); 
+        } else if (document.getElementById('email')) {
+             document.getElementById('email').focus(); // Focus a email si nom no existeix
+        }
+
         editButton.style.display = 'none';
         saveButton.style.display = 'inline-block';
         cancelButton.style.display = 'inline-block';
@@ -322,10 +348,14 @@ if ($conn && $conn->ping()) {
         form.classList.add('view-mode');
         inputs.forEach(input => {
              input.setAttribute('readonly', true);
-             input.value = input.defaultValue;
+             // Restaura valor inicial guardat al carregar pàgina
+             input.value = input.defaultValue; 
+             // Restaura estil view-mode
              input.style.backgroundColor = 'transparent';
              input.style.borderColor = 'transparent';
+             input.style.cursor = 'default'; // Cursor per defecte
         });
+        // Reset contrasenyes
         document.getElementById('password').value = '';
         document.getElementById('confirm_password').value = '';
         passwordFields.forEach(field => field.style.display = 'none');
@@ -333,11 +363,17 @@ if ($conn && $conn->ping()) {
         editButton.style.display = 'inline-block';
         saveButton.style.display = 'none';
         cancelButton.style.display = 'none';
+        
+        // Reset previsualització foto
         const currentPhotoSrc = '<?php echo htmlspecialchars($current_photo); ?>';
         const photoPreview = document.getElementById('perfil-foto-img');
         if (photoPreview) photoPreview.src = currentPhotoSrc;
+        
+        // Neteja input file
         const fileInput = document.getElementById('foto-input');
-        if (fileInput) fileInput.value = null;
+        if (fileInput) fileInput.value = null; 
+
+        // Neteja missatges
         const errorMsg = form.querySelector('.form-message.error');
         const successMsg = form.querySelector('.form-message.success');
         if (errorMsg) errorMsg.remove();
@@ -345,12 +381,21 @@ if ($conn && $conn->ping()) {
       }
     }
 
+    // Guardar valors inicials
     document.addEventListener('DOMContentLoaded', () => {
          const inputs = document.querySelectorAll('#perfil-form input[data-editable]');
          inputs.forEach(input => input.defaultValue = input.value);
-         toggleEditMode(false);
+         // Assegura estat inicial correcte
+         // Comprovem si hi ha missatge d'èxit o error per mantenir mode edició si cal
+         const hasMessage = document.querySelector('.form-message.error') || document.querySelector('.form-message.success');
+         if(hasMessage) {
+             toggleEditMode(true); // Manté mode edició si venim d'un POST amb missatge
+         } else {
+             toggleEditMode(false); // Mode visualització per defecte
+         }
     });
 
+     // Previsualitzar foto
      function previsualizarFoto(event) {
         const reader = new FileReader();
         const output = document.getElementById('perfil-foto-img');
@@ -388,7 +433,7 @@ if ($conn && $conn->ping()) {
               <div class="perfil-foto-container">
                   <img id="perfil-foto-img" class="perfil-foto" src="<?php echo htmlspecialchars($current_photo); ?>" alt="Foto de perfil" />
                   <label for="foto-input" class="boton-foto edit-mode-item" style="display: none;">Cambiar Foto</label>
-                  <input type="file" id="foto-input" name="nueva_foto" accept="image/*" hidden onchange="previsualizarFoto(event)" data-editable />
+                  <input type="file" id="foto-input" name="nueva_foto" accept="image/*" hidden onchange="previsualizarFoto(event)" data-editable /> 
               </div>
               <div class="perfil-info-basica">
                   <div class="perfil-info-row">

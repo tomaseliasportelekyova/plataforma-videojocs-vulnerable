@@ -34,22 +34,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['user_id'] = $usuari['id'];
         $_SESSION['nickname'] = $usuari['nickname'];
 
-        // ========= NOU: GUARDAR FOTO A LA SESSIÓ =========
-        // Comprovem si té foto i si l'arxiu existeix
+        // ========= CORRECCIÓ: GUARDAR FOTO A LA SESSIÓ (SIMPLIFICAT) =========
         $default_photo = '../frontend/imatges/users/default_user.png';
-        $user_photo_path = $usuari['photo'] ?? $default_photo;
+        $user_photo_db = $usuari['photo'] ?? null; // Agafem el valor de la BBDD
         
-        // Verifiquem si la ruta guardada és vàlida i si l'arxiu existeix realment
-        // Important: La comprovació file_exists necessita la ruta des del servidor,
-        // però a la sessió guardem la ruta relativa que usarà l'HTML/CSS.
-        // Assumim que la ruta guardada a la BBDD ja és la correcta per l'HTML.
-        // Si la foto és null, buida o la default, guardem la default a la sessió.
-        if (empty($user_photo_path) || $user_photo_path == $default_photo || !file_exists($user_photo_path)) {
-             $_SESSION['user_photo'] = $default_photo;
+        // Si la BBDD té una ruta i NO és buida, la usem. Sinó, la default.
+        // Assumim que la ruta a la BBDD és la correcta per l'HTML (relativa des del backend/).
+        if (!empty($user_photo_db)) {
+             $_SESSION['user_photo'] = $user_photo_db; 
         } else {
-             $_SESSION['user_photo'] = $user_photo_path;
+             $_SESSION['user_photo'] = $default_photo;
         }
-        // ================================================
+        // Hem tret el file_exists() d'aquí perquè pot donar problemes amb rutes relatives.
+        // El navegador ja intentarà carregar la imatge; si no existeix, mostrarà l'alt text o res.
+        // =====================================================================
 
         // Redirigir al dashboard
         header("Location: ../dashboard.php");

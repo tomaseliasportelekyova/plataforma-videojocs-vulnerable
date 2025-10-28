@@ -1,20 +1,16 @@
 <?php
 // Arxiu: backend/includes/_header.php
-// Necessita $nickname i $paginaActual definits abans.
-// Ara també utilitzarà $_SESSION['user_photo']
 
 $paginaActual = $paginaActual ?? '';
-$is_logged_in = isset($nickname, $_SESSION['user_id']); // Comprovació més robusta
+$is_logged_in = isset($nickname, $_SESSION['user_id']);
 
-// Recuperem la foto de la sessió (si existeix)
-$user_photo_for_header = $_SESSION['user_photo'] ?? '../frontend/imatges/users/default_user.png';
+// Recuperem la foto de la sessió. Si no existeix, usem la default.
 $default_photo_path = '../frontend/imatges/users/default_user.png';
+$user_photo_for_header = $_SESSION['user_photo'] ?? $default_photo_path;
 
-// Decidim si mostrem foto o inicial
-// Comprovem si la ruta NO és la default I si l'arxiu existeix realment
-// La comprovació file_exists pot fallar depenent de permisos i rutes relatives/absolutes.
-// Si dóna problemes, podem simplificar i només comprovar si NO és la default.
-$show_photo = ($is_logged_in && $user_photo_for_header != $default_photo_path /* && file_exists($user_photo_for_header) */ ); // Comentat file_exists per simplicitat inicial
+// Decidim si mostrem foto o inicial:
+// Mostrem foto si està loguejat i la ruta a la sessió NO ÉS LA RUTA DEFAULT.
+$show_photo = ($is_logged_in && $user_photo_for_header !== $default_photo_path);
 
 ?>
 
