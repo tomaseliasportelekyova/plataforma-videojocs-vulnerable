@@ -8,31 +8,34 @@
   padding: 0;
 }
 
-body {
+body.dark-theme { /* Applying styles directly to the body with the class */
   font-family: 'Inter', sans-serif;
   background-color: #0F0F1A;
   color: #E0E0E0;
+  padding-top: 70px; /* Adjust this height based on your header's actual height */
 }
 
-/* --- Barra de Navegación Flotante --- */
+/* --- Barra de Navegación Fija --- */
 .main-header.floating {
-  position: absolute; /* Cambiamos a absoluto para que flote sobre el Hero */
+  /* CHANGE: From 'absolute' to 'fixed' */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(15, 15, 26, 0.5); /* Más transparente */
+  background-color: rgba(15, 15, 26, 0.8); /* Background with transparency */
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 100;
+  z-index: 1000; /* Ensure it stays above everything */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 3rem;
-  transition: background-color 0.3s ease; /* Transición suave al hacer scroll (necesita JS) */
+  transition: background-color 0.3s ease;
+  box-sizing: border-box; /* Ensure padding doesn't affect 100% width */
 }
 
-/* Estilos de .logo, .main-nav, .user-profile (se mantienen de la versión anterior) */
+/* Styles for .logo, .main-nav, .user-profile remain the same */
 .logo a { font-size: 1.6rem; font-weight: 700; color: #FFFFFF; text-decoration: none; }
 .main-nav { display: flex; gap: 2.5rem; }
 .main-nav a { font-size: 1rem; font-weight: 500; color: #A0A0B0; text-decoration: none; padding-bottom: 0.3rem; border-bottom: 2px solid transparent; transition: color 0.3s ease, border-color 0.3s ease; }
@@ -43,12 +46,14 @@ body {
 .user-profile a:hover .avatar-placeholder { background-color: #5A5A6A; }
 
 
-/* --- Sección Hero Carrusel --- */
+/* --- Hero Carousel Section --- */
 .hero-carousel {
   position: relative;
   width: 100%;
-  height: 90vh; /* Ocupa casi toda la altura inicial */
+  /* Removed padding-top, body now handles it */
+  height: 90vh; /* Takes almost the full initial height */
   overflow: hidden;
+  margin-top: -70px; /* Pull it up to counteract body padding if needed, optional */
 }
 
 .hero-slide {
@@ -58,7 +63,7 @@ body {
   width: 100%;
   height: 100%;
   background-size: cover;
-  background-position: center right; /* Centra la imagen a la derecha */
+  background-position: center right; /* Centers the image to the right */
   opacity: 0;
   transition: opacity 1s ease-in-out;
   z-index: 1;
@@ -68,19 +73,19 @@ body {
   z-index: 2;
 }
 
-/* Degradado oscuro sobre la imagen */
+/* Dark gradient over the image */
 .hero-gradient {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* Degradado de negro a transparente de izquierda a derecha */
+  /* Gradient from black to transparent, left to right */
   background: linear-gradient(to right, rgba(15, 15, 26, 1) 5%, rgba(15, 15, 26, 0.8) 30%, rgba(15, 15, 26, 0) 70%);
   z-index: 3;
 }
 
-/* Contenedor del texto e info */
+/* Container for text and info */
 .hero-content {
   position: absolute;
   top: 0;
@@ -88,13 +93,13 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center; /* Centra verticalmente */
-  padding-left: 5%; /* Margen izquierdo */
+  align-items: center; /* Vertically center */
+  padding-left: 5%; /* Left margin */
   z-index: 4;
 }
 
 .hero-info {
-  max-width: 35%; /* Ancho máximo de la info */
+  max-width: 35%; /* Max width for info */
   color: #ffffff;
 }
 
@@ -109,8 +114,8 @@ body {
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
-  color: #d0d0d0; /* Un gris más claro para la descripción */
-  max-height: 120px; /* Limita la altura de la descripción */
+  color: #d0d0d0; /* Lighter gray for description */
+  max-height: 120px; /* Limit description height */
   overflow: hidden;
 }
 
@@ -130,7 +135,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.8rem 1.8rem;
-  background-color: #8A2BE2; /* Botón morado */
+  background-color: #8A2BE2; /* Purple button */
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -146,7 +151,7 @@ body {
   background-color: #9932CC;
 }
 
-/* Flechas de navegación */
+/* Navigation arrows */
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -168,19 +173,18 @@ body {
 .carousel-arrow.prev { left: 2%; }
 .carousel-arrow.next { right: 2%; }
 
-/* --- Contenido Principal (Filas de Juegos) --- */
-/* Lo posicionamos relativamente para que no se solape con el Hero absoluto */
+/* --- Main Content (Game Rows) --- */
 .dashboard-content {
   position: relative;
-  z-index: 5; /* Asegura que esté por encima del Hero al hacer scroll */
+  z-index: 5; /* Ensures it's above the Hero when scrolling */
   padding: 3rem;
-  padding-top: 5rem; /* Más espacio arriba para compensar el Hero */
+  /* Removed padding-top, body handles it */
   max-width: 1600px;
   margin: 0 auto;
-  margin-top: -10vh; /* Solapamos ligeramente con la parte inferior del Hero */
+  margin-top: -10vh; /* Slightly overlap with the bottom of the Hero */
 }
 
-/* Estilos de .game-row, .games-carousel, .game-card (se mantienen de la versión anterior) */
+/* Styles for .game-row, .games-carousel, .game-card remain the same */
 .game-row { margin-bottom: 3rem; }
 .game-row h2 { font-size: 1.6rem; font-weight: 700; color: #FFFFFF; margin-bottom: 1.5rem; }
 .games-carousel { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; -ms-overflow-style: none; }
@@ -193,22 +197,23 @@ body {
 .claim-button { display: block; width: 100%; padding: 0.5rem; margin-top: 0.5rem; background-color: #8A2BE2; color: #FFFFFF; border: none; border-radius: 4px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background-color 0.3s ease; }
 .claim-button:hover { background-color: #9932CC; }
 
-/* --- Responsividad --- */
+/* --- Responsiveness --- */
 @media (max-width: 900px) {
   .hero-info h1 { font-size: 2.5rem; }
   .hero-info p { font-size: 1rem; max-height: 80px;}
   .hero-info { max-width: 50%; }
   .main-header.floating { padding: 1rem 1.5rem; }
+  body.dark-theme { padding-top: 60px; } /* Adjust padding for smaller header */
   .main-nav { gap: 1.5rem; }
-  .dashboard-content { padding: 2rem 1.5rem; padding-top: 3rem; margin-top: -5vh; }
+  .dashboard-content { padding: 2rem 1.5rem; /* Removed padding-top */ margin-top: -5vh; }
 }
 
 @media (max-width: 600px) {
-  .hero-carousel { height: 70vh; }
+  .hero-carousel { height: 70vh; margin-top: -60px; /* Adjust if needed */ }
   .hero-content { padding-left: 1rem; }
   .hero-info { max-width: 80%; }
   .hero-info h1 { font-size: 2rem; }
-  .hero-info p { display: none; } /* Ocultamos descripción en móviles */
+  .hero-info p { display: none; } /* Hide description on mobile */
   .platform-tag { margin-bottom: 1.5rem; }
   .play-button { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
   .carousel-arrow { width: 30px; height: 30px; font-size: 1rem; }
@@ -216,4 +221,5 @@ body {
   .carousel-arrow.next { right: 1rem; }
   .game-card { width: 220px; }
   .game-card img { height: 120px; }
+  body.dark-theme { padding-top: 55px; } /* Further adjust padding */
 }
