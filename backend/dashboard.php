@@ -84,7 +84,14 @@ $current_hero_game = $hero_games[0];
     <section class="game-row">
       <h2>Continuar Jugando</h2>
       <div class="games-carousel">
-        <article class="game-card"> <img src="../frontend/imatges/spacewar.jpg" alt="Space War"> <div class="card-info"> <h3>Space War</h3> </div> </article>
+        
+        <a href="../frontend/jocs/joc_naus/index.html" style="text-decoration: none; color: inherit;">
+            <article class="game-card"> 
+                <img src="../frontend/imatges/spacewar.jpg" alt="Naus vs Ovnis"> 
+                <div class="card-info"> <h3>Naus vs Ovnis</h3> </div> 
+            </article>
+        </a>
+
         <article class="game-card"> <img src="../frontend/imatges/mario.png" alt="Unlucky Mario Bros"> <div class="card-info"> <h3>Unlucky Mario Bros</h3> </div> </article>
         <article class="game-card"> <img src="../frontend/imatges/hollow-knight.jpg" alt="Hollow Knight"> <div class="card-info"> <h3>Hollow Knight</h3> </div> </article>
         <article class="game-card"> <img src="https://via.placeholder.com/400x225/555/eee?text=Juego+4" alt="Juego 4"> <div class="card-info"> <h3>Juego 4</h3> </div> </article>

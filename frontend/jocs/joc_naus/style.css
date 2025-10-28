@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  font-family: sans-serif;
+  cursor: crosshair; /* Canviem el cursor */
+}
+
+#pantalla {
+  width: 100vw;
+  height: 100vh;
+  /* Imatge de fons per l'espai */
+  background-color: #000;
+  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* La plantilla base per les entitats */
+.entitat {
+  position: absolute;
+  z-index: 1;
+  /* Perquè la imatge s'ajusti al 'div' */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Estils del jugador */
+.jugador {
+  /* Pots canviar la URL per la teva imatge */
+  background-image: url('https://via.placeholder.com/100x100/0000FF/FFFFFF?text=PLAYER');
+}
+
+/* Estils de l'enemic */
+.enemic {
+  /* Pots canviar la URL per la teva imatge */
+  background-image: url('https://via.placeholder.com/50x50/FF0000/FFFFFF?text=ENEMY');
+}
+
+/* Estils del projectil */
+.projectil {
+  /* JA NO VOLEM IMATGE */
+  background-image: none;
+  
+  /* EL VOLEM VERMELL */
+  background-color: #FF0000; /* Vermell brillant */
+
+  /* Opcional: una petita ombra per fer-lo "brillar" */
+  box-shadow: 0 0 5px #FF0000, 0 0 10px #FF0000;
+  border-radius: 2px; /* Cantonades arrodonides */
+}
+
+/* Estils del BOSS */
+.boss {
+  background-image: url('https://via.placeholder.com/200x200/FF00FF/FFFFFF?text=BOSS');
+  /* Animació per la vida del boss */
+  transition: box-shadow 0.5s ease;
+}
+
+#infoPartida {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 1rem;
+  font-size: 1.25rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  width: 250px;
+  z-index: 2;
+  border: 1px solid #fff;
+}
+
+#infoPartida > p {
+  margin: 0.25rem;
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
