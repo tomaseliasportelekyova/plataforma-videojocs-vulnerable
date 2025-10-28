@@ -223,3 +223,16 @@ body.dark-theme { /* Applying styles directly to the body with the class */
   .game-card img { height: 120px; }
   body.dark-theme { padding-top: 55px; } /* Further adjust padding */
 }
+
+.avatar-image {
+  width: 36px; /* Mateixa mida que el placeholder */
+  height: 36px;
+  border-radius: 50%; /* Forma rodona */
+  object-fit: cover; /* Assegura que la imatge cobreixi sense deformar-se */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Vora subtil opcional */
+  display: block; /* Evita espais extranys sota la imatge */
+}
+/* Opcional: Efecte hover similar al placeholder */
+.user-profile a:hover .avatar-image {
+  box-shadow: 0 0 5px rgba(138, 43, 226, 0.5); /* Resplandor lila */
+}

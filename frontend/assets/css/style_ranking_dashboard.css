@@ -1,0 +1,198 @@
+/* Arxiu: frontend/assets/css/style_ranking_dashboard.css */
+/* Aquest CSS complementa style_dashboard.css */
+
+/* Contenedor principal que centra el panel */
+.ranking-main-content {
+  padding-top: 100px; /* Espacio para el header fijo */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 100px);
+  padding-bottom: 40px;
+}
+
+/* Panel central */
+.ranking-panel {
+  background-color: #1A1A2A; /* Color secundario dashboard */
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 900px; /* Más ancho para la tabla */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #E0E0E0;
+}
+
+/* Título */
+.ranking-titulo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 30px;
+  text-align: center;
+  border-bottom: 1px solid #8A2BE2; /* Acento dashboard */
+  padding-bottom: 15px;
+}
+
+/* Sección Info Juego (Opcional) */
+.game-info-ranking {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+  background-color: #0F0F1A; /* Fondo principal */
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.game-banner-ranking { /* Si decides añadir imagen */
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.game-details-ranking h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+.game-details-ranking p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #A0A0B0; /* Gris nav */
+  line-height: 1.5;
+}
+
+/* Sección Tabla Ranking */
+.ranking-table-section {
+  margin-bottom: 30px;
+}
+
+.ranking-table-section h2 {
+  font-size: 1.6rem;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ranking-table-section h2 .fa-trophy {
+  color: #FFD700; /* Color oro para el trofeo */
+}
+
+/* Contenedor para hacer la tabla responsive */
+.table-responsive {
+  overflow-x: auto; /* Scroll horizontal en móviles */
+}
+
+/* Tabla de Ranking */
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  min-width: 600px; /* Evita que se aplaste demasiado */
+}
+
+.ranking-table thead {
+  background-color: #8A2BE2; /* Acento dashboard */
+  color: #FFFFFF;
+}
+
+.ranking-table th, .ranking-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ranking-table th {
+  font-weight: 600;
+}
+
+.ranking-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.ranking-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Efecto hover sutil */
+}
+
+/* Estilos específicos celdas */
+.ranking-table td:first-child { /* Posición */
+  font-weight: 700;
+  color: #FFFFFF;
+  width: 50px; /* Ancho fijo para posición */
+  text-align: center;
+}
+.ranking-table td:nth-child(3) { /* Puntuación */
+  font-weight: 600;
+  color: #00FFAB; /* Color alternativo si quieres */
+}
+
+/* Div para avatar pequeño (si quisieras añadirlo) */
+.player-rank {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* .player-avatar-rank { width: 24px; height: 24px; border-radius: 50%; background-color: #3A3A4A; } */
+
+/* Botón Volver */
+.ranking-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+.boton-volver {
+    display: inline-block;
+    background-color: #3A3A4A; /* Gris avatar */
+    color: #E0E0E0;
+    padding: 10px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+.boton-volver:hover {
+    background-color: #5A5A6A;
+}
+
+/* Enlace Login en header */
+.login-link {
+    color: #A0A0B0;
+    text-decoration: none;
+    font-weight: 500;
+}
+.login-link:hover {
+    color: #FFFFFF;
+}
+
+/* Responsividad */
+@media (max-width: 900px) {
+  .ranking-panel {
+    max-width: 95%;
+    padding: 20px;
+  }
+}
+@media (max-width: 600px) {
+  .ranking-titulo { font-size: 1.8rem; }
+  .game-info-ranking { flex-direction: column; align-items: flex-start; }
+  .game-banner-ranking { width: 100%; max-width: 250px; margin-bottom: 15px; }
+  .ranking-table th, .ranking-table td { padding: 10px 8px; font-size: 0.9rem; }
+}
+
+.nickname-link {
+    color: #E0E0E0; /* Color de texto normal */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.nickname-link:hover {
+    color: #FFFFFF; /* Blanco al pasar el ratón */
+    text-decoration: underline;
+    text-decoration-color: #8A2BE2; /* Subrayado con color acento */
+}

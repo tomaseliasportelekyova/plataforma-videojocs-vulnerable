@@ -1,25 +1,34 @@
 <?php
-// Conexión a la base de datos
-$conexion = new mysqli("172.18.33.241", "plataforma_user", "123456789a", "plataforma_videojocs");
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+session_start();
+
+// Mantenemos la lógica de sesión
+if (!isset($_SESSION['nickname'], $_SESSION['user_id'])) {
+    $nickname = null;
+    $user_id = null;
+} else {
+    $nickname = $_SESSION['nickname'];
+    $user_id = $_SESSION['user_id'];
 }
 
-// Obtener el nombre del juego desde la URL
-$juego = $_GET['juego'] ?? '';
-$juego = trim($juego);
+// Incluir conexión BBDD
+require "./funcions/db_mysqli.php";
 
-// Validar entrada
-if ($juego === '') {
-    die("Juego no especificado.");
-}
+// ========= DEFINIM LA PÀGINA ACTUAL PEL HEADER =========
+$paginaActual = 'ranking';
+// =======================================================
 
-// Consulta de ranking
-$sql = "SELECT jugador, puntos, fecha FROM ranking WHERE juego = ? ORDER BY puntos DESC LIMIT 10";
-$stmt = $conexion->prepare($sql);
-$stmt->bind_param("s", $juego);
-$stmt->execute();
-$resultado = $stmt->get_result();
+// --- Obtener Ranking GLOBAL ---
+$sql_ranking_global = "SELECT u.id as user_id, u.nickname, SUM(p.puntuacio_obtinguda) as total_puntos, MAX(p.data_partida) as ultima_partida_fecha
+                       FROM partides p
+                       JOIN usuaris u ON p.usuari_id = u.id
+                       GROUP BY u.id, u.nickname
+                       ORDER BY total_puntos DESC
+                       LIMIT 20";
+
+$stmt_ranking_global = $conn->prepare($sql_ranking_global);
+$stmt_ranking_global->execute();
+$result_ranking = $stmt_ranking_global->get_result();
+
 ?>
 
 <!DOCTYPE html>
@@ -27,55 +36,65 @@ $resultado = $stmt->get_result();
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ranking - <?php echo htmlspecialchars($juego); ?></title>
-  <link rel="stylesheet" href="../frontend/assets/css/style_ranking.css" />
+  <title>Ranking Global - Shit Games</title>
+  <link rel="stylesheet" href="../frontend/assets/css/style_dashboard.css" />
+  <link rel="stylesheet" href="../frontend/assets/css/style_ranking_dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-  <header class="ranking-header">
-    <h1>Ranking de jugadores - <?php echo htmlspecialchars($juego); ?></h1>
-  </header>
+<body class="dark-theme">
 
-  <main class="ranking-container">
-    <section class="game-info">
-      <img src="../frontend/imatges/<?php echo strtolower(str_replace(' ', '-', $juego)); ?>.jpg" alt="<?php echo htmlspecialchars($juego); ?>" class="game-banner" />
-      <div class="game-details">
-        <h2><?php echo htmlspecialchars($juego); ?></h2>
-        <p><strong>Plataforma:</strong> Información no disponible</p>
-        <p><strong>Género:</strong> Información no disponible</p>
-        <p><strong>Puntuación media:</strong> Información no disponible</p>
+  <?php include './includes/_header.php'; ?>
+  <main class="ranking-main-content">
+      <div class="ranking-panel">
+          <h1 class="ranking-titulo"><i class="fas fa-globe-europe"></i> Ranking Global</h1>
+
+          <section class="ranking-table-section">
+              <h2><i class="fas fa-star" style="color: #FFD700;"></i> Top Jugadores Globales</h2>
+              <div class="table-responsive">
+                  <table class="ranking-table">
+                      <thead>
+                          <tr>
+                              <th>#</th>
+                              <th>Jugador</th>
+                              <th>Puntuación Total</th>
+                              <th>Última Partida</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <?php
+                          $posicion = 1;
+                          if ($result_ranking->num_rows > 0) {
+                              while ($fila = $result_ranking->fetch_assoc()) {
+                                  $fecha_formateada = $fila['ultima_partida_fecha'] ? date("d/m/Y", strtotime($fila['ultima_partida_fecha'])) : 'N/A';
+                                  
+                                  // --- NICKNAME CLICABLE ---
+                                  // Enllaç provisional a '#'
+                                  $nickname_link = '<a href="#" class="nickname-link" title="Ver perfil de ' . htmlspecialchars($fila['nickname']) . '">' . htmlspecialchars($fila['nickname']) . '</a>';
+                                  
+                                  echo "<tr>
+                                          <td>{$posicion}</td>
+                                          <td><div class='player-rank'>" . $nickname_link . "</div></td>
+                                          <td>{$fila['total_puntos']}</td>
+                                          <td>{$fecha_formateada}</td>
+                                        </tr>";
+                                  $posicion++;
+                              }
+                          } else {
+                              echo "<tr><td colspan='4'>Todavía no hay puntuaciones globales registradas.</td></tr>";
+                          }
+                          $stmt_ranking_global->close();
+                          $conn->close();
+                          ?>
+                      </tbody>
+                  </table>
+              </div>
+          </section>
+
+          <div class="ranking-actions">
+              <a href="dashboard.php" class="boton-volver">Volver al Dashboard</a>
+          </div>
       </div>
-    </section>
-
-    <section class="ranking-table">
-      <h3>Top jugadores</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Posición</th>
-            <th>Jugador</th>
-            <th>Puntos</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $posicion = 1;
-          while ($fila = $resultado->fetch_assoc()) {
-              echo "<tr>
-                      <td>{$posicion}</td>
-                      <td>" . htmlspecialchars($fila['jugador']) . "</td>
-                      <td>{$fila['puntos']}</td>
-                      <td>{$fila['fecha']}</td>
-                    </tr>";
-              $posicion++;
-          }
-          if ($posicion === 1) {
-              echo "<tr><td colspan='4'>No hay datos de ranking para este juego.</td></tr>";
-          }
-          ?>
-        </tbody>
-      </table>
-    </section>
   </main>
+
 </body>
 </html>

@@ -1,205 +1,375 @@
 /* Arxiu: frontend/assets/css/style_perfil.css */
-/* Aquest CSS complementa style_dashboard.css */
+/* Complementa style_dashboard.css */
 
-/* Contenedor principal que centra el panel (AJUSTADO) */
 .perfil-main-content {
-  padding-top: 100px; /* Espacio para el header flotante/fijo */
+  padding-top: 100px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: calc(100vh - 100px); /* Ajusta altura mínima */
+  min-height: calc(100vh - 70px); /* Ajustat a l'alçada del header fix */
   padding-bottom: 40px;
 }
 
-/* El panel central (AJUSTADO) */
 .perfil-panel {
-  background-color: #1A1A2A; /* Color secundario del dashboard */
+  background-color: #1A1A2A;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   padding: 30px 40px;
   width: 100%;
-  max-width: 800px; /* Un poco más ancho para que respire */
+  max-width: 900px; /* Ampliat per més contingut */
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #E0E0E0;
+  position: relative; /* Per posicionar els botons d'edició */
 }
+
+/* Botons Edició/Guardar/Cancelar */
+.perfil-edit-buttons {
+    position: absolute;
+    top: 25px; /* Ajustat */
+    right: 30px; /* Ajustat */
+    display: flex;
+    gap: 10px;
+    z-index: 10; /* Per sobre del títol si cal */
+}
+.boton-editar, .boton-cancelar {
+    background-color: #3A3A4A;
+    color: #E0E0E0;
+    border: none;
+    padding: 8px 15px; /* Una mica més gran */
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500; /* Afegit */
+    transition: background-color 0.2s ease;
+    display: inline-flex; /* Per alinear icona i text */
+    align-items: center;
+    gap: 5px;
+}
+.boton-editar i, .boton-principal i { margin-right: 3px; } /* Reduït marge icona */
+.boton-editar:hover, .boton-cancelar:hover { background-color: #5A5A6A; }
+
+/* Botó Principal (Guardar) */
+.boton-principal {
+    background-color: #8A2BE2;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.boton-principal:hover { background-color: #9932CC; }
+.boton-principal:active { transform: scale(0.98); }
+
+.boton-cancelar { background-color: #555; }
+.boton-cancelar:hover { background-color: #777; }
 
 /* Título */
 .perfil-titulo {
   font-size: 2rem;
   font-weight: 700;
   color: #FFFFFF;
-  margin-bottom: 25px;
+  margin-bottom: 30px; /* Més marge inferior */
   text-align: center;
   border-bottom: 1px solid #8A2BE2;
-  padding-bottom: 10px;
+  padding-bottom: 15px; /* Més padding */
+  margin-top: 30px; /* Espai per botons si es posen a sobre en mòbil */
 }
 
-/* Foto */
+/* Secció Header */
+.perfil-header-section {
+    display: flex;
+    gap: 40px; /* Més espai */
+    margin-bottom: 40px; /* Més marge */
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separador */
+    padding-bottom: 30px; /* Espai sota el separador */
+}
+
 .perfil-foto-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
+  gap: 15px; /* Més espai */
+  flex-shrink: 0;
 }
 
 .perfil-foto {
-  width: 150px;
-  height: 150px;
+  width: 140px; /* Una mica més gran */
+  height: 140px;
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid #8A2BE2;
 }
 
 .boton-foto {
-  background-color: #8A2BE2;
-  color: #fff;
-  padding: 8px 15px;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
-  border: none;
+    background-color: #8A2BE2;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+    border: none;
 }
 .boton-foto:hover { background-color: #9932CC; }
 
-/* Secciones */
-.perfil-seccion { margin-bottom: 30px; }
-.perfil-seccion h2 {
-  font-size: 1.3rem;
-  color: #FFFFFF;
-  margin-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 8px;
+
+.perfil-info-basica { flex-grow: 1; }
+
+/* Files Info Bàsica */
+.perfil-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: baseline; /* Alineació vertical a la línia base */
+}
+.perfil-info-row .perfil-campo {
+    flex-basis: calc(50% - 12.5px);
+    margin-bottom: 0;
+    min-width: 200px;
+}
+.nickname-field {
+    flex-grow: 1;
+    /* Eliminem flex-basis per permetre creixement */
+}
+.rank-global {
+    flex-basis: auto; /* No ocupis el 50% */
+    text-align: right;
+    font-size: 1.2rem;
+    color: #00FFAB;
+    white-space: nowrap;
+    align-self: baseline; /* Alinea amb la base del nickname */
+    font-weight: 600;
+    margin-left: auto; /* Empeny a la dreta */
+}
+.rank-global strong {
+    color: #A0A0B0;
+    font-weight: 500;
+    font-size: 0.8rem; /* Més petit que el número */
+    display: inline-block; /* En línia */
+    margin-right: 5px; /* Petit espai */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* Campos (label+input+button) */
-.perfil-campo { margin-bottom: 15px; position: relative; }
+/* Camps generals */
 .perfil-campo label {
-  display: block;
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #A0A0B0;
-  margin-bottom: 5px;
+    display: block; /* Assegurem que sempre es mostri */
+    font-weight: 500;
+    font-size: 0.8rem; /* Una mica més petit */
+    color: #A0A0B0;
+    margin-bottom: 4px; /* Menys espai */
+    text-transform: uppercase; /* Estil títol petit */
+    letter-spacing: 0.5px;
 }
-
-/* Inputs (AJUSTADOS) */
-.perfil-campo input[type="text"],
-.perfil-campo input[type="email"],
-.perfil-campo input[type="password"] {
-  width: 100%; /* Asegura que ocupen el ancho */
-  padding: 10px 12px;
+.perfil-campo input {
+  width: 100%;
+  padding: 10px 14px;
   font-size: 1rem;
   background-color: #0F0F1A;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;
   color: #E0E0E0;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-  box-sizing: border-box; /* Importante para que el padding no desborde */
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 .perfil-campo input:focus {
-  outline: none;
-  border-color: #8A2BE2;
-  background-color: #1a1a2e;
-}
-.perfil-campo input[readonly] {
-  background-color: #2a2a3a;
-  color: #a0a0b0;
+    outline: none;
+    border-color: #8A2BE2;
+    background-color: #1a1e2e; /* Ajust color focus */
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.3); /* Resplandor al focus */
 }
 
-/* Botón Editar (AJUSTADO) */
-.perfil-campo button[type="button"] {
-  /* Lo posicionamos bien */
-  position: absolute;
-  right: 10px;
-  /* Alineado verticalmente con el input */
-  top: 50%;
-  transform: translateY(-50%);
-  margin-top: 10px; /* Ajuste fino si label está presente */
-
-  /* Estilos */
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  background-color: #3A3A4A;
-  color: #E0E0E0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+/* --- Mode Visualització (view-mode) --- */
+.view-mode .perfil-campo input[data-editable] {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    padding-left: 0 !important; /* Eliminem padding lateral */
+    padding-right: 0 !important;
+    padding-top: 2px !important; /* Reduïm padding vertical */
+    padding-bottom: 2px !important;
+    pointer-events: none;
+    color: #E0E0E0;
+    box-shadow: none !important;
+    font-size: 1.05rem; /* Una mica més gran que el label */
+    height: auto;
+    min-height: 20px; /* Reduït */
+    line-height: 1.4;
+    width: auto;
+    display: inline-block; /* Important per ajustar amplada */
+    vertical-align: baseline; /* Alineació vertical */
 }
-.perfil-campo button[type="button"]:hover { background-color: #5A5A6A; }
-
-/* Si el botón debe ir debajo (responsive o preferencia) */
-/* .perfil-campo button[type="button"] {
-  position: static;
-  transform: none;
-  margin-top: 5px;
-  width: auto;
-} */
-
-
-.perfil-campo small {
+/* Amaguem NOMÉS el label del nickname en view-mode */
+.view-mode .nickname-field label {
     display: block;
-    margin-top: 5px;
-    font-size: 0.8rem;
-    color: #a0a0b0;
+}
+/* Mantenim visibles els altres labels */
+.view-mode .perfil-campo:not(.nickname-field) label {
+    display: block; /* Assegura que els altres labels es vegin */
+    margin-bottom: 0; /* Menys espai quan el valor va al costat */
+}
+/* Ajustem l'input perquè es posi al costat del label (excepte nickname) */
+.view-mode .perfil-campo:not(.nickname-field) input[data-editable] {
+     margin-left: 8px; /* Espai entre label i valor */
 }
 
-/* Info cuenta */
+/* Ajustaments específics per files en view-mode */
+.view-mode .perfil-info-row {
+    align-items: baseline; /* Mantenim alineació base */
+    margin-bottom: 10px; /* Menys espai entre files */
+}
+.view-mode .perfil-info-row .perfil-campo {
+     /* display: flex;  Potser no cal flex aquí */
+     /* align-items: baseline; */
+}
+
+/* Amaguem small i edit-mode-items com abans */
+.view-mode .perfil-campo small { display: none; }
+.view-mode .edit-mode-item { display: none !important; }
+.view-mode .rank-global { display: inline-block; padding-top: 0; align-self: baseline; } /* Alineat amb nickname */
+.view-mode .password-field { display: none !important; }
+
+/* --- Mode Edició (edit-mode) --- */
+.edit-mode .perfil-campo input[data-editable][readonly] { /* Nickname si límit */
+    background-color: #2a2a3a !important;
+    color: #777 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    width: 100%;
+    display: block;
+    font-size: 1rem;
+    min-height: auto;
+    line-height: initial;
+    padding: 10px 14px; /* Restaura padding */
+}
+.edit-mode .perfil-campo input[data-editable]:not([readonly]) {
+     background-color: #0F0F1A;
+     border-color: rgba(255, 255, 255, 0.15);
+     color: #E0E0E0;
+     font-size: 1rem;
+     min-height: auto;
+     line-height: initial;
+     padding: 10px 14px;
+     pointer-events: auto;
+     width: 100%;
+     display: block;
+}
+.edit-mode .perfil-campo input[data-editable]:focus { /* Estil focus ja definit */ }
+.edit-mode .perfil-campo label { display: block; } /* Assegurem que es veu */
+.edit-mode .perfil-campo small { display: block; margin-top: 4px; font-size: 0.8rem; }
+.edit-mode .edit-mode-item { display: inline-block !important; }
+.edit-mode .rank-global { display: none !important; }
+.edit-mode .password-field { display: block !important; }
+
+
+/* Seccions */
+.perfil-seccion { margin-bottom: 40px; }
+.perfil-seccion h2 {
+  font-size: 1.4rem;
+  color: #FFFFFF;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.perfil-seccion h2 i { color: #8A2BE2; font-size: 1.2rem; }
+
+/* Grid Jocs Jugats */
+.played-games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+}
+.played-game-card {
+    background-color: #0F0F1A;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+.played-game-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2); }
+.played-game-card img { display: block; width: 100%; height: 120px; object-fit: cover; }
+.game-card-info { padding: 12px; flex-grow: 1; display: flex; flex-direction: column;}
+.game-card-info h3 { font-size: 0.95rem; color: #FFFFFF; margin: 0 0 8px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.game-card-info p { font-size: 0.8rem; color: #A0A0B0; margin: 3px 0; display: flex; align-items: center; gap: 6px; }
+.game-card-info p i { width: 12px; text-align: center; color: #8A2BE2; }
+
+/* Placeholder */
+.placeholder-text { color: #A0A0B0; font-style: italic; text-align: center; padding: 20px;}
+
+/* Wishlist Item */
+.wishlist-game-item { display: flex; align-items: center; gap: 15px; background-color: #0F0F1A; padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; border: 1px solid rgba(255, 255, 255, 0.1); }
+.wishlist-game-item img { width: 40px; height: 50px; object-fit: cover; border-radius: 4px; }
+.wishlist-game-item span { flex-grow: 1; color: #E0E0E0; font-size: 0.9rem; }
+.boton-quitar-wishlist { background: none; border: 1px solid #d23b3b; color: #d23b3b; padding: 4px 8px; font-size: 0.8rem; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, color 0.2s; }
+.boton-quitar-wishlist:hover { background-color: #d23b3b; color: #fff; }
+
+/* Info Compte */
 .perfil-info-item { margin-bottom: 10px; font-size: 0.95rem; color: #C0C0C0; }
 .perfil-info-item strong { color: #E0E0E0; }
 
-/* Acciones */
-.perfil-acciones { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
-.perfil-acciones button, .perfil-acciones a {
-  width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  box-sizing: border-box;
+/* Accions Inferiors */
+.perfil-acciones {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
 }
-
-/* Botones */
-.boton-principal { background-color: #8A2BE2; color: #fff; border: none; }
-.boton-principal:hover { background-color: #9932CC; }
-.boton-principal:active { transform: scale(0.98); }
-.boton-peligro { background-color: #d23b3b; color: #fff; border: none; }
+.boton-peligro {
+    background-color: #d23b3b;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    width: auto;
+}
 .boton-peligro:hover { background-color: #b53030; }
 .boton-peligro:active { transform: scale(0.98); }
 
-/* Salida */
-.perfil-salida { color: #A0A0B0; text-decoration: none; font-size: 0.9rem; }
+.perfil-salida { color: #A0A0B0; text-decoration: none; font-size: 0.9rem; width: auto;}
 .perfil-salida:hover { color: #FFFFFF; text-decoration: underline; }
 
-/* Mensajes */
+/* Missatges error/success */
 .form-message { padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; text-align: center; width: 100%; font-size: 0.9rem; }
 .error { background-color: rgba(248, 215, 218, 0.1); color: #f5c6cb; border: 1px solid rgba(245, 198, 203, 0.5); }
 .success { background-color: rgba(212, 237, 218, 0.1); color: #c3e6cb; border: 1px solid rgba(195, 230, 203, 0.5); }
 
 
-/* Responsividad */
-@media (max-width: 700px) {
-  .perfil-panel { padding: 20px 15px; max-width: 95%; }
-  .perfil-titulo { font-size: 1.5rem; }
-  .perfil-foto { width: 100px; height: 100px; }
-  .perfil-seccion h2 { font-size: 1.1rem; }
-  /* Botón editar debajo en móvil si se prefiere */
-   .perfil-campo button[type="button"] {
-     position: static;
-     transform: none;
-     margin-top: 8px;
-     width: auto;
-     float: right; /* Lo alinea a la derecha debajo del input */
-   }
-   .perfil-campo input[type="text"],
-   .perfil-campo input[type="email"],
-   .perfil-campo input[type="password"] {
-       /* Dejamos espacio para el botón si está al lado */
-       /* padding-right: 70px; */
-   }
+/* Responsivitat */
+@media (max-width: 768px) {
+  .perfil-panel { padding: 25px 20px; max-width: 95%; }
+  .perfil-header-section { flex-direction: column; align-items: center; gap: 20px; }
+  .perfil-info-row { flex-direction: column; gap: 15px; }
+  .perfil-info-row .perfil-campo { flex-basis: 100%; }
+  .rank-global { text-align: center; padding-top: 0; margin-bottom: 15px; width: 100%; }
+  .played-games-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .perfil-acciones { flex-direction: column; gap: 15px; } /* Botons un sota l'altre */
+  .perfil-acciones button, .perfil-acciones a { width: 100%; } /* Ocupen tot l'ample */
+}
+
+@media (max-width: 480px) {
+    .perfil-edit-buttons { position: static; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;} /* Botons sota el títol */
+    .perfil-titulo { margin-top: 0; }
+    .played-games-grid { grid-template-columns: 1fr 1fr; } /* Sempre 2 columnes */
+    .game-card-info p { font-size: 0.75rem; gap: 4px;} /* Text més petit a les cards */
 }

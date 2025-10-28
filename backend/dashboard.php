@@ -9,29 +9,31 @@ if (!isset($_SESSION['nickname'])) {
 $nickname = $_SESSION['nickname'];
 
 // --- Datos de ejemplo para el carrusel Hero ---
-// En una aplicación real, esto vendría de la base de datos
 $hero_games = [
     [
         'title' => 'Space War',
         'description' => 'Pilota tu caza estelar a través de campos de asteroides y flotas enemigas en este trepidante shooter espacial.',
-        'image' => '../frontend/imatges/spacewar.jpg', // Imagen grande para el fondo
-        'platform' => 'Nintendo Switch' // Opcional
+        'image' => '../frontend/imatges/spacewar.jpg',
+        'platform' => 'Web'
     ],
     [
         'title' => 'Unlucky Mario Bros',
         'description' => 'Un desafío plataformero extremo. ¿Podrás superar los niveles más injustos jamás creados?',
         'image' => '../frontend/imatges/mario.png',
-        'platform' => 'PlayStation 5'
+        'platform' => 'Web'
     ],
     [
         'title' => 'Hollow Knight',
         'description' => 'Explora un vasto reino interconectado de insectos y héroes. Descubre misterios ancestrales y combate criaturas retorcidas.',
         'image' => '../frontend/imatges/hollow-knight.jpg',
-        'platform' => 'PC'
+        'platform' => 'PC/Consola'
     ]
 ];
-// Seleccionamos el primer juego para mostrar inicialmente
-$current_hero_game = $hero_games[0];
+$current_hero_game = $hero_games[0]; // Muestra Naus vs Ovnis por defecto
+
+// ========= DEFINIM LA PÀGINA ACTUAL PEL HEADER =========
+$paginaActual = 'dashboard';
+// =======================================================
 ?>
 
 <!DOCTYPE html>
@@ -45,22 +47,7 @@ $current_hero_game = $hero_games[0];
 </head>
 <body class="dark-theme">
 
-  <header class="main-header floating">
-    <div class="logo">
-      <a href="dashboard.php">Shit Games</a>
-    </div>
-    <nav class="main-nav">
-      <a href="#">Todos</a>
-      <a href="#" class="active">Juegos</a>
-      <a href="#">Reclamar</a>
-    </nav>
-    <div class="user-profile">
-      <a href="perfil.php" title="Ir al perfil de <?php echo htmlspecialchars($nickname); ?>">
-        <div class="avatar-placeholder"><?php echo strtoupper(substr($nickname, 0, 1)); ?></div>
-      </a>
-    </div>
-  </header>
-
+  <?php include './includes/_header.php'; ?>
   <section class="hero-carousel">
     <div class="hero-slide active" style="background-image: url('<?php echo htmlspecialchars($current_hero_game['image']); ?>');">
       <div class="hero-gradient"></div>
@@ -71,7 +58,13 @@ $current_hero_game = $hero_games[0];
           <?php if (!empty($current_hero_game['platform'])): ?>
             <span class="platform-tag"><?php echo htmlspecialchars($current_hero_game['platform']); ?></span>
           <?php endif; ?>
-          <button class="play-button"><i class="fas fa-play"></i> Jugar Ahora</button>
+          <?php if ($current_hero_game['title'] === 'Space War'): ?>
+               <a href="../frontend/jocs/joc_naus/index.html" class="play-button"><i class="fas fa-play"></i> Jugar Ahora</a>
+           <?php elseif ($current_hero_game['title'] === 'Unlucky Mario Bros'): ?>
+               <button class="play-button" disabled><i class="fas fa-play"></i> Próximamente</button>
+           <?php else: ?>
+                <button class="play-button" disabled><i class="fas fa-tools"></i> No Jugable</button>
+           <?php endif; ?>
         </div>
       </div>
     </div>
@@ -81,25 +74,38 @@ $current_hero_game = $hero_games[0];
 
   <main class="dashboard-content">
 
-    <section class="game-row">
-      <h2>Continuar Jugando</h2>
+    <section class="game-row" id="juegos">
+      <h2>Continuar Jugando / Descubrir</h2>
       <div class="games-carousel">
-        
-        <a href="../frontend/jocs/joc_naus/index.html" style="text-decoration: none; color: inherit;">
-            <article class="game-card"> 
-                <img src="../frontend/imatges/spacewar.jpg" alt="Naus vs Ovnis"> 
-                <div class="card-info"> <h3>Naus vs Ovnis</h3> </div> 
+
+        <a href="../frontend/jocs/joc_naus/index.html?joc_id=1" class="game-card-link"> <article class="game-card">
+                <img src="../frontend/imatges/spacewar.jpg" alt="Naus vs Ovnis">
+                <div class="card-info"> <h3>Naus vs Ovnis</h3> </div>
+                 <a href="ranking.php?joc_id=1" class="rank-button-card">Ver Ranking</a> </article>
+        </a>
+
+        <a href="#" class="game-card-link" onclick="alert('Juego aún no disponible'); return false;">
+            <article class="game-card">
+                <img src="../frontend/imatges/mario.png" alt="Unlucky Mario Bros">
+                <div class="card-info"> <h3>Unlucky Mario Bros</h3> </div>
+                 <button class="rank-button-card" disabled>Ver Ranking</button>
             </article>
         </a>
 
-        <article class="game-card"> <img src="../frontend/imatges/mario.png" alt="Unlucky Mario Bros"> <div class="card-info"> <h3>Unlucky Mario Bros</h3> </div> </article>
-        <article class="game-card"> <img src="../frontend/imatges/hollow-knight.jpg" alt="Hollow Knight"> <div class="card-info"> <h3>Hollow Knight</h3> </div> </article>
+        <a href="#" class="game-card-link" onclick="alert('Este juego no está disponible en la plataforma'); return false;">
+            <article class="game-card">
+                <img src="../frontend/imatges/hollow-knight.jpg" alt="Hollow Knight">
+                <div class="card-info"> <h3>Hollow Knight</h3> </div>
+                 <button class="rank-button-card" disabled>Ver Ranking</button>
+            </article>
+        </a>
+
         <article class="game-card"> <img src="https://via.placeholder.com/400x225/555/eee?text=Juego+4" alt="Juego 4"> <div class="card-info"> <h3>Juego 4</h3> </div> </article>
         <article class="game-card"> <img src="https://via.placeholder.com/400x225/666/eee?text=Juego+5" alt="Juego 5"> <div class="card-info"> <h3>Juego 5</h3> </div> </article>
       </div>
     </section>
 
-    <section class="game-row">
+    <section class="game-row" id="reclamar">
       <h2>Los Mejores Juegos Para Canjear</h2>
        <div class="games-carousel">
         <article class="game-card"> <img src="https://via.placeholder.com/400x225/777/eee?text=Canjeable+1" alt="Canjeable 1"> <div class="card-info"> <h3>Canjeable 1</h3> <button class="claim-button">Reclamar Juego</button> </div> </article>
@@ -108,7 +114,66 @@ $current_hero_game = $hero_games[0];
       </div>
     </section>
 
+     <section class="game-row" id="todos">
+        <h2>Todos los Juegos</h2>
+         <p style="color: #a0a0b0;">Próximamente...</p>
+     </section>
+
   </main>
 
-  </body>
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const slides = <?php echo json_encode($hero_games); ?>;
+          const heroSlide = document.querySelector('.hero-slide');
+          const heroTitle = heroSlide.querySelector('h1');
+          const heroDesc = heroSlide.querySelector('p');
+          const heroPlatform = heroSlide.querySelector('.platform-tag');
+          let currentSlideIndex = 0;
+
+          function changeSlide(index) {
+              const slideData = slides[index];
+              heroSlide.style.backgroundImage = `url('${slideData.image}')`;
+              heroTitle.textContent = slideData.title;
+              heroDesc.textContent = slideData.description;
+              if (heroPlatform) {
+                  if (slideData.platform) {
+                      heroPlatform.textContent = slideData.platform;
+                      heroPlatform.style.display = 'inline-block';
+                  } else {
+                      heroPlatform.style.display = 'none';
+                  }
+              }
+              // Actualizar enlace/botón del Hero
+              const heroButtonContainer = heroSlide.querySelector('.hero-info');
+              let existingButton = heroButtonContainer.querySelector('.play-button');
+              if (existingButton) existingButton.remove(); // Remove previous button/link
+
+              let newButtonHTML;
+              if (slideData.title === 'Space War') {
+                   newButtonHTML = `<a href="../frontend/jocs/joc_naus/index.html?joc_id=1" class="play-button"><i class="fas fa-play"></i> Jugar Ahora</a>`;
+               } else if (slideData.title === 'Unlucky Mario Bros') {
+                   newButtonHTML = `<button class="play-button" disabled><i class="fas fa-play"></i> Próximamente</button>`;
+               } else {
+                   newButtonHTML = `<button class="play-button" disabled><i class="fas fa-tools"></i> No Jugable</button>`;
+               }
+               // Insert the new button/link after the platform tag (or description if no tag)
+               const referenceElement = heroPlatform && heroPlatform.style.display !== 'none' ? heroPlatform : heroDesc;
+               referenceElement.insertAdjacentHTML('afterend', newButtonHTML);
+          }
+
+          document.querySelector('.carousel-arrow.next').addEventListener('click', () => {
+              currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+              changeSlide(currentSlideIndex);
+          });
+          document.querySelector('.carousel-arrow.prev').addEventListener('click', () => {
+              currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+              changeSlide(currentSlideIndex);
+          });
+
+          // Initialize the first slide button/link
+          changeSlide(0);
+      });
+  </script>
+
+</body>
 </html>
