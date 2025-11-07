@@ -1,0 +1,33 @@
+<div id="powerup-panel">
+  <h4>PRÒXIM EFECTE: <span id="powerup-timer">12s</span></h4>
+  <ul id="powerup-list">
+    <li data-powerup="SUPER_VELOCITAT">Super Velocitat</li>
+    <li data-powerup="BOLA_LENTA">Bola Lenta</li>
+    <li data-powerup="PALA_GEGANT_IA">Pala IA Gegant</li>
+    <li data-powerup="PALA_PETITA_IA">Pala IA Petita</li>
+    <li data-powerup="PALA_GEGANT_JUGADOR">Pala Jugador Gegant</li>
+    <li data-powerup="BOLA_FANTASMA">Bola Fantasma</li> 
+    <li data-powerup="REBOT_INVERS_VERTICAL">Rebot Invers</li>
+    <li data-powerup="MULTI-BOLA">Multi-Bola</li>
+    <li data-powerup="CLONS_DE_SOMBRA">Clons de Sombra</li>
+    </ul>
+</div>
+
+<div id="pantalla">
+    <canvas id="pong-canvas" width="800" height="500"></canvas>
+    
+    <div id="particle-container"></div>
+    
+    <div id="game-overlay">
+         <h2 class="overlay-title">Preparat?</h2>
+         <div class="overlay-buttons-container">
+            <button id="start-button" class="play-button">
+                <i class="fas fa-play"></i> Començar Partida
+            </button>
+            <a id="exit-level-button" class="play-button secondary" href="dashboard.php" style="display: none;">
+               <i class="fas fa-sign-out-alt"></i> Sortir
+            </a>
+         </div>
+        <p class="controls-info">Fes clic per veure les instruccions.</p>
+    </div>
+</div>

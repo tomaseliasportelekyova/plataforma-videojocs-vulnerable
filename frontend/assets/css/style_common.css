@@ -1,0 +1,154 @@
+/*
+ * Arxiu: frontend/assets/css/style_common.css
+ * * Aquest arxiu conté ELS ESTILS COMUNS del Header i Footer
+*/
+
+/* === 1. ESTILS DEL HEADER === */
+/* (Això es queda exactament igual) */
+
+.main-header.floating {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(15, 15, 26, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box; 
+}
+.logo a { 
+    font-size: 1.6rem; 
+    font-weight: 700; 
+    color: #FFFFFF; 
+    text-decoration: none; 
+}
+.main-nav { 
+    display: flex; 
+    gap: 2.5rem; 
+}
+.main-nav a { 
+    font-size: 1rem; 
+    font-weight: 500; 
+    color: #A0A0B0; 
+    text-decoration: none; 
+    padding-bottom: 0.3rem; 
+    border-bottom: 2px solid transparent; 
+    transition: color 0.3s ease, border-color 0.3s ease; 
+}
+.main-nav a:hover, .main-nav a.active { 
+    color: #FFFFFF; 
+    border-bottom-color: #8A2BE2; 
+}
+.user-profile { 
+    display: flex; 
+    align-items: center; 
+}
+.user-profile a { 
+    text-decoration: none; 
+}
+.avatar-placeholder { 
+    width: 36px; 
+    height: 36px; 
+    border-radius: 50%; 
+    background-color: #3A3A4A; 
+    color: #E0E0E0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-weight: 700; 
+    font-size: 1.1rem; 
+    transition: background-color 0.3s ease; 
+}
+.user-profile a:hover .avatar-placeholder { 
+    background-color: #5A5A6A; 
+}
+.avatar-image {
+  width: 36px; 
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover; 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  display: block; 
+}
+.user-profile a:hover .avatar-image {
+  box-shadow: 0 0 5px rgba(138, 43, 226, 0.5); 
+}
+.login-link {
+    color: #A0A0B0;
+    text-decoration: none;
+    font-weight: 500;
+}
+.login-link:hover {
+    color: #FFFFFF;
+}
+
+
+/* === 2. ESTILS DEL FOOTER (MODIFICATS) === */
+.main-footer {
+  background-color: #0F0F1A; 
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 40px 3rem;
+  margin-top: 50px; 
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+/* === CANVI: De 'grid' a 'flex' per centrar el grup === */
+.footer-content {
+  max-width: 1600px; 
+  margin: 0 auto;
+  display: flex; /* CANVIAT */
+  justify-content: center; /* NOU: Centra les columnes */
+  flex-wrap: wrap; /* Permet que caiguin si no caben */
+  gap: 60px; /* Augmentem l'espai entre columnes */
+}
+
+.footer-column {
+  width: 220px; /* Mantenim l'amplada fixa de cada columna */
+  text-align: left; /* El text dins de la columna, a l'esquerra */
+}
+/* === FI DEL CANVI === */
+
+.footer-column h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 15px;
+}
+.footer-column p, .footer-column a {
+  color: #A0A0B0; 
+  text-decoration: none;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+.footer-column a:hover {
+  color: #FFFFFF; 
+}
+.footer-column p {
+  line-height: 1.5;
+}
+
+/* Responsivitat del Footer (MODIFICADA) */
+@media (max-width: 600px) {
+  .main-footer {
+    padding: 30px 1.5rem;
+  }
+  .footer-content {
+    flex-direction: column; /* CANVI: Apila les columnes */
+    align-items: center; /* CANVI: Centra les columnes apilades */
+    gap: 30px; /* Reduïm el gap */
+  }
+  .footer-column {
+    text-align: center; /* CANVI: Centrem el text només en mòbil */
+    width: 100%; /* Ocupa tot l'ample */
+  }
+}

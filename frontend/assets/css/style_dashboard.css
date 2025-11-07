@@ -1,0 +1,332 @@
+/* === ESTILO DASHBOARD CON HERO CAROUSEL === */
+/*
+ * Arxiu: frontend/assets/css/style_dashboard.css
+ * * Aquest arxiu conté NOMÉS els estils del contingut del Dashboard.
+ * La base (body) i el common (header/footer) estan en arxius separats.
+*/
+
+/* --- Hero Carousel Section --- */
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 90vh; 
+  overflow: hidden;
+  margin-top: -70px; /* Ho pugem per sota del header fix */
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center right;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 1;
+}
+.hero-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Dark gradient over the image */
+.hero-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(15, 15, 26, 1) 5%, rgba(15, 15, 26, 0.8) 30%, rgba(15, 15, 26, 0) 70%);
+  z-index: 3;
+}
+
+/* Container for text and info */
+.hero-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center; 
+  padding-left: 5%; 
+  z-index: 4;
+}
+
+.hero-info {
+  max-width: 35%; 
+  color: #ffffff;
+}
+
+.hero-info h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-info p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: #d0d0d0; 
+  max-height: 120px; 
+  overflow: hidden;
+}
+
+.platform-tag {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.play-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.8rem;
+  background-color: #8A2BE2; 
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none; /* === CANVI: Afegit per treure el subratllat === */
+}
+.play-button i {
+  font-size: 0.9rem;
+}
+.play-button:hover {
+  background-color: #9932CC;
+}
+
+/* Navigation arrows */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 5;
+  transition: background-color 0.3s ease;
+}
+.carousel-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.carousel-arrow.prev { left: 2%; }
+.carousel-arrow.next { right: 2%; }
+
+/* --- Main Content (Game Rows) --- */
+.dashboard-content {
+  position: relative;
+  z-index: 5; 
+  padding: 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  margin-top: -10vh; 
+}
+
+/* Styles for .game-row, .games-carousel, .game-card */
+.game-row { 
+  margin-bottom: 3rem; 
+  position: relative; 
+}
+.game-row h2 { font-size: 1.6rem; font-weight: 700; color: #FFFFFF; margin-bottom: 1.5rem; }
+
+.carousel-wrapper {
+  position: relative;
+}
+
+.games-carousel { 
+  display: flex; 
+  gap: 1rem; 
+  overflow-x: auto; 
+  padding-bottom: 1rem; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  scroll-behavior: smooth; 
+}
+.games-carousel::-webkit-scrollbar { display: none; }
+
+a.game-card-link {
+    text-decoration: none;
+}
+
+.game-card { 
+  flex: 0 0 auto; 
+  width: 280px; 
+  background-color: #1A1A2A; 
+  border-radius: 8px; 
+  overflow: hidden; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  cursor: pointer; 
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+.game-card:hover { transform: scale(1.03); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.2); }
+.game-card img { 
+  display: block; 
+  width: 100%; 
+  height: 160px; 
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.card-info { 
+  padding: 0.8rem 1rem; 
+  padding-bottom: 10px;
+  flex-grow: 1;
+}
+.card-info h3 { font-size: 1rem; font-weight: 500; color: #E0E0E0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.5rem; }
+.claim-button { display: block; width: 100%; padding: 0.5rem; margin-top: 0.5rem; background-color: #8A2BE2; color: #FFFFFF; border: none; border-radius: 4px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background-color 0.3s ease; }
+.claim-button:hover { background-color: #9932CC; }
+
+/* --- Responsiveness --- */
+@media (max-width: 900px) {
+  .hero-info h1 { font-size: 2.5rem; }
+  .hero-info p { font-size: 1rem; max-height: 80px;}
+  .hero-info { max-width: 50%; }
+  .dashboard-content { padding: 2rem 1.5rem; margin-top: -5vh; }
+}
+
+@media (max-width: 600px) {
+  .hero-carousel { height: 70vh; margin-top: -60px; }
+  .hero-content { padding-left: 1rem; }
+  .hero-info { max-width: 80%; }
+  .hero-info h1 { font-size: 2rem; }
+  .hero-info p { display: none; } 
+  .platform-tag { margin-bottom: 1.5rem; }
+  .play-button { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
+  .carousel-arrow { width: 30px; height: 30px; font-size: 1rem; }
+  .carousel-arrow.prev { left: 1rem; }
+  .carousel-arrow.next { right: 1rem; }
+  .game-card { width: 220px; }
+  .game-card img { height: 120px; }
+}
+
+/* Estils dels 'dots' del carrusel (es queden igual) */
+.carousel-dots {
+  position: absolute;
+  bottom: 20px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  display: flex;
+  gap: 8px; 
+  z-index: 5; 
+  list-style: none; 
+  padding: 0;
+  margin: 0;
+}
+.dot-indicator {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.4); 
+  border-radius: 50%; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+.dot-indicator.active {
+  width: 25px; 
+  border-radius: 5px; 
+  background-color: #FFFFFF; 
+}
+
+
+/* === Footer de la Card i Icona Premium (es queden igual) === */
+.card-footer {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 0 1rem 12px 1rem; 
+}
+.card-premium-icon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #8A2BE2; 
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.card-premium-icon .fa-gem {
+  font-size: 0.8rem;
+}
+.card-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px; 
+    color: #FFD700; 
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0; 
+    padding: 0; 
+}
+.card-rating .fa-star {
+    font-size: 0.9rem;
+}
+.rank-button-card {
+    display: none;
+}
+
+
+/* === Fletxes per Carrusels de Files (es queden igual) === */
+.carousel-arrow-row {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(15, 15, 26, 0.8);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 35px; 
+  height: 35px;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+.carousel-arrow-row i {
+    font-family: "Font Awesome 6 Free", "FontAwesome";
+    font-weight: 900; 
+}
+.carousel-wrapper:hover .carousel-arrow-row {
+  opacity: 1; 
+}
+.carousel-arrow-row:hover {
+  background-color: #8A2BE2; 
+  border-color: #8A2BE2;
+}
+.carousel-arrow-row.prev {
+  left: -15px; 
+}
+.carousel-arrow-row.next {
+  right: -15px; 
+}
+.carousel-arrow-row[style*="display: none"] {
+  display: none !important;
+}
+@media (max-width: 600px) {
+  .carousel-arrow-row.prev { left: 5px; }
+  .carousel-arrow-row.next { right: 5px; }
+  .carousel-wrapper:hover .carousel-arrow-row {
+    opacity: 0.8; 
+  }
+}

@@ -1,0 +1,80 @@
+<div id="pantalla">
+    
+    <div id="td-game-world">
+        
+        <div id="level-counter">
+            Nivell 1 / 10
+        </div>
+        </div>
+
+    <div id="td-ui-panel">
+        <div class="ui-section shop">
+            <h4><i class="fas fa-store"></i> Botiga de Torretes</h4>
+            <div class="shop-items-wrapper">
+                <button id="buy-turret-1" class="shop-button" data-type="Sentry" data-cost="100">
+                    <div class="svg-icon-wrapper" id="svg-metralleta"></div>
+                    <div class="shop-button-info">
+                        <strong>Metralleta</strong>
+                        <small>Cost: 100 <i class="fas fa-coins"></i></small>
+                    </div>
+                </button>
+                <button id="buy-turret-2" class="shop-button" data-type="Cano" data-cost="250">
+                     <div class="svg-icon-wrapper" id="svg-cano"></div>
+                    <div class="shop-button-info">
+                        <strong>Canó Lent</strong>
+                        <small>Cost: 250 <i class="fas fa-coins"></i></small>
+                    </div>
+                </button>
+                <button id="buy-turret-3" class="shop-button" data-type="Bit-Freezer" data-cost="150">
+                     <div class="svg-icon-wrapper" id="svg-freezer"></div>
+                    <div class="shop-button-info">
+                        <strong>Alentidor</strong>
+                        <small>Cost: 150 <i class="fas fa-coins"></i></small>
+                    </div>
+                </button>
+                <button id="buy-turret-4" class="shop-button" data-type="Detector" data-cost="75">
+                     <div class="svg-icon-wrapper" id="svg-detector"></div>
+                    <div class="shop-button-info">
+                        <strong>Detector</strong>
+                        <small>Cost: 75 <i class="fas fa-coins"></i></small>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="selected-turret-panel" style="display:none;">
+        <h4 id="selected-turret-name">Sentry</h4>
+        
+        <div class="turret-stats-grid">
+            <p>Nivell:</p> <span id="selected-turret-level">1</span>
+            <p>Mal:</p> <span id="selected-turret-damage">2</span>
+            <p>Cadència:</p> <span id="selected-turret-speed">5</span>
+        </div>
+
+        <button id="upgrade-path-A-button" class="shop-button upgrade path-a" style="display: none;">
+            Millorar Cadència (Cost: 150 <i class="fas fa-coins"></i>)
+        </button>
+        
+        <button id="upgrade-path-B-button" class="shop-button upgrade path-b" style="display: none;">
+            Millorar Dany (Cost: 150 <i class="fas fa-coins"></i>)
+        </button>
+
+        <button id="sell-turret-button" class="shop-button sell">
+            Vendre (Retorn: 70 <i class="fas fa-coins"></i>)
+        </button>
+    </div>
+    <div id="game-overlay">
+         <h2 class="overlay-title">Preparat?</h2>
+         <div class="overlay-buttons-container">
+            <button id="start-button" class="play-button">
+                <i class="fas fa-play"></i> Començar Partida
+            </button>
+            <a id="exit-level-button" class="play-button secondary" href="dashboard.php" style="display: none;">
+               <i class="fas fa-sign-out-alt"></i> Sortir
+            </a>
+         </div>
+        <p class="controls-info">Fes clic per veure les instruccions.</p>
+    </div>
+    
+</div>

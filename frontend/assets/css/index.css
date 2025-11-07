@@ -1,0 +1,225 @@
+:root {
+    --primary-bg: #0d0d1a;
+    --secondary-bg: #1a1a2e;
+    --text-color: #e0e0e0;
+    --accent-color: #00ffab;
+    --glow-color: rgba(0, 255, 171, 0.6);
+    --font-title: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    margin: 0;
+    font-family: var(--font-body);
+    /* Efecto de rejilla de fondo sutil */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    background: rgba(13, 13, 26, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 255, 171, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo h1 {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: 1.8rem;
+    font-weight: 900;
+}
+
+.logo .hub-accent {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.main-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-left: 2rem;
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.main-nav a:hover, .main-nav a.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+    text-shadow: 0 0 5px var(--glow-color);
+}
+.main-nav a.logout { color: #ff5733; }
+.main-nav a.logout:hover { border-bottom-color: #ff5733; }
+
+.main-content {
+    padding: 2rem 3rem;
+}
+
+/* --- Juego Destacado --- */
+.featured-game {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    background: var(--secondary-bg);
+    padding: 2rem;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 95% 100%, 0 100%, 0% 10%);
+}
+
+.featured-info span {
+    display: block;
+    color: var(--accent-color);
+    font-family: var(--font-title);
+    margin-bottom: 1rem;
+}
+
+.featured-info h2 {
+    font-family: var(--font-title);
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
+}
+
+.featured-info p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 80%;
+}
+
+.play-button-featured {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--primary-bg);
+    padding: 15px 30px;
+    text-decoration: none;
+    font-family: var(--font-title);
+    font-weight: 700;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+.play-button-featured:hover {
+    box-shadow: 0 0 20px var(--glow-color);
+    transform: scale(1.05);
+}
+
+.featured-image img {
+    width: 100%;
+    clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+
+/* --- Biblioteca de Juegos --- */
+.game-library {
+    margin-top: 4rem;
+}
+
+.library-title {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--accent-color);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.game-card {
+    position: relative;
+    cursor: pointer;
+    aspect-ratio: 4 / 5;
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+}
+
+.game-card:hover .card-border {
+    opacity: 1;
+}
+
+.card-border {
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(from 180deg at 50% 50%, var(--accent-color), transparent, var(--accent-color));
+    animation: rotate 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.card-content {
+    position: absolute;
+    inset: 2px;
+    background: var(--primary-bg);
+    z-index: 2;
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.card-content img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.game-card:hover img {
+    transform: scale(1.1);
+}
+
+.card-overlay {
+    background: linear-gradient(to top, rgba(13, 13, 26, 0.95), rgba(13, 13, 26, 0));
+    padding: 1rem;
+    transform: translateY(100%);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.game-card:hover .card-overlay {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.card-overlay h4 {
+    font-family: var(--font-title);
+    margin: 0;
+    font-size: 1.5rem;
+}
+.card-overlay p {
+    margin: 0.5rem 0 1rem 0;
+}
+
+.play-button {
+    text-decoration: none;
+    color: var(--accent-color);
+    font-weight: bold;
+    font-family: var(--font-title);
+}

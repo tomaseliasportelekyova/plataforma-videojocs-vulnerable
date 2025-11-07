@@ -1,0 +1,169 @@
+/*
+ * Arxiu: frontend/jocs/joc_naus/style.css
+ * * Aquest arxiu només conté estils ESPECÍFICS del joc de naus.
+ * Els estils comuns (menús, overlays, panell info) estan a 'style_game_common.css'
+*/
+
+/* === 1. LAYOUT GENERAL DE LA PÀGINA === */
+.page-joc .game-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    width: 100%;
+    min-height: calc(100vh - 70px); 
+    padding: 20px 0; 
+    box-sizing: border-box;
+}
+
+/* Títol del joc */
+.page-joc .game-title {
+    font-size: 2rem;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #8A2BE2;
+    padding-bottom: 5px;
+}
+
+/* Wrapper que conté JOC + INFO */
+.page-joc .game-area-wrapper {
+    position: relative; 
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Nou contenidor per a la pantalla i els overlays */
+.page-joc .game-screen-container {
+    position: relative; 
+    flex-shrink: 0; 
+    
+    /* Centrem el contenidor del joc */
+    width: 800px; /* Mida del joc */
+    margin: 0 auto; /* EL CENTRA */
+}
+
+/* === 2. PANTALLA I FONS DEL JOC === */
+.page-joc #pantalla {
+  position: relative; 
+  width: 800px;
+  height: 700px;
+  background-color: #1a1a2a; /* Fons espacial (fallback) */
+  overflow: hidden;
+  border: 2px solid #8A2BE2;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+}
+
+.page-joc .stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%; 
+  background-image:
+    radial-gradient(circle at 50px 100px, #fff 1px, transparent 1px),
+    radial-gradient(circle at 100px 300px, #fff 1px, transparent 1px),
+    radial-gradient(circle at 200px 50px, #fff 2px, transparent 2px),
+    radial-gradient(circle at 300px 250px, #fff 1px, transparent 1px),
+    radial-gradient(circle at 450px 400px, #fff 1px, transparent 1px),
+    radial-gradient(circle at 550px 150px, #fff 2px, transparent 2px),
+    radial-gradient(circle at 700px 350px, #fff 1px, transparent 1px),
+    radial-gradient(circle at 750px 550px, #fff 2px, transparent 2px),
+    radial-gradient(circle at 800px 650px, #fff 1px, transparent 1px),
+    radial-gradient(circle at 150px 500px, #bbb 1px, transparent 1px),
+    radial-gradient(circle at 250px 600px, #bbb 1px, transparent 1px),
+    radial-gradient(circle at 350px 50px, #bbb 1px, transparent 1px),
+    radial-gradient(circle at 650px 200px, #bbb 1px, transparent 1px);
+  background-size: 800px 700px; 
+  animation: move-stars 12s linear infinite; 
+  z-index: 1; 
+  background-color: transparent; 
+}
+
+@keyframes move-stars {
+  from { transform: translateY(-700px); }
+  to { transform: translateY(0); } 
+}
+
+
+/* === 3. ENTITATS DEL JOC === */
+.page-joc .entitat { 
+    position: absolute; 
+    background-size: contain; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+.page-joc .jugador { 
+    bottom: 10px; 
+    left: calc(50% - 30px); 
+    z-index: 10; 
+    width: 60px; 
+    height: 60px; 
+}
+.page-joc .enemic { 
+    top: -40px; 
+    z-index: 5; 
+    width: 40px; 
+    height: 40px; 
+}
+.page-joc .projectil { 
+    background-color: #FF0000; 
+    box-shadow: 0 0 5px #FF0000, 0 0 10px #FF0000; 
+    border-radius: 2px; 
+    z-index: 8; 
+    width: 5px; 
+    height: 25px;
+}
+.page-joc .projectil-enemic {
+    position: absolute; 
+    background-color: #00FF00; /* Verd */
+    box-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
+    border-radius: 2px;
+    z-index: 8;
+    width: 5px;
+    height: 15px; /* Més curt */
+}
+.page-joc .boss { 
+    top: 10px; 
+    left: calc(50% - 50px); 
+    z-index: 9; 
+    width: 100px; 
+    height: 100px; 
+    transition: box-shadow 0.2s ease;
+}
+
+
+/* === 4. RESPONSIVITAT (Elements Específics) === */
+@media (max-width: 1100px) { 
+    .page-joc .game-screen-container {
+        width: 100%; 
+        margin: 0; 
+    }
+}
+@media (max-width: 900px) {
+    .page-joc #pantalla { 
+        width: 90vw; 
+        height: 80vh; 
+        max-width: 700px; 
+        max-height: 600px; 
+    }
+    .page-joc .stars { background-size: 100% calc(100% / 2); }
+    @keyframes move-stars { 
+        from { transform: translateY(-50%); } 
+        to { transform: translateY(0); } 
+    }
+}
+@media (max-width: 600px) {
+    .page-joc .game-main-container { padding: 10px 0; } 
+    .page-joc #pantalla { 
+        width: 98vw; 
+        height: 75vh; 
+        max-width: none; 
+        max-height: none; 
+    }
+    .page-joc .stars { background-size: 100% calc(100% / 2); }
+    .page-joc .game-title { font-size: 1.5rem; margin-bottom: 15px; }
+}

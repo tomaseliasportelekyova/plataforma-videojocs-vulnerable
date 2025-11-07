@@ -1,0 +1,101 @@
+/*
+ * Arxiu: frontend/jocs/joc_snake_tron/style.css
+ * Estils per al joc de Snake (ID 24) - VERSIÓ CORREGIDA
+*/
+
+/* * Títol del joc (Igual que els altres jocs)
+*/
+.page-joc .game-title {
+    font-size: 2rem;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #8A2BE2;
+    padding-bottom: 5px;
+    text-align: center; 
+}
+
+/* * Contenidor principal.
+ * Fem servir Flexbox per centrar el joc i alinear el panell.
+*/
+.page-joc .game-area-wrapper {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap; /* Perquè en mòbil el panell caigui a sota */
+    justify-content: center; /* Centra el contingut */
+    align-items: flex-start; /* Alinea a la part superior */
+    gap: 30px; /* Espai entre el joc i el panell d'info */
+    width: 100%;
+    max-width: 1000px; /* Amplada màx (600 joc + 250 info + gaps) */
+    margin: 0 auto; /* Centra el wrapper sencer */
+}
+
+/* * Contenidor del joc (canvas + overlays)
+*/
+.page-joc .game-screen-container {
+    position: relative; 
+    width: 600px; /* Mida fixa del joc */
+    height: 600px;
+    flex-shrink: 0; /* Evita que s'encongeixi */
+    border-radius: 8px;
+    overflow: hidden; /* Per la reixeta */
+}
+
+/* * Pantalla de fons (la reixeta)
+*/
+.page-joc #pantalla {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  
+  /* Efecte reixeta TRON */
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  /* Mida de la reixeta (600px / 20 gridSize = 30px) */
+  background-size: 30px 30px; 
+}
+
+/* * El canvas on es dibuixa
+*/
+.page-joc #snake-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: transparent; /* Transparent per veure la reixeta */
+  position: relative;
+  z-index: 10;
+  border-radius: 8px;
+  
+  /* Resplendor de neó */
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), 
+              0 0 10px rgba(0, 255, 255, 0.3) inset;
+}
+
+/* * Panell d'informació (ja inclòs a juego.php)
+ * Ara es posiciona correctament gràcies al Flexbox
+*/
+.page-joc #infoPartida {
+    position: static; /* TRENQUEM EL POSICIONAMENT ABSOLUT D'ABANS */
+    width: 250px; /* Mida estàndard dels teus panells */
+    flex-shrink: 0;
+    margin-top: 0;
+}
+
+/* * Responsivitat
+ * Quan la pantalla és massa petita, el panell es posa a sota.
+*/
+@media (max-width: 910px) { /* 600 + 250 + 30 + 30 */
+    .page-joc .game-area-wrapper {
+        gap: 20px;
+    }
+    .page-joc #infoPartida {
+        width: 100%;
+        max-width: 600px; /* Que no sigui més ample que el joc */
+        margin-top: 20px;
+    }
+}

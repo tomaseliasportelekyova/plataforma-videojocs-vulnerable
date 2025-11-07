@@ -1,0 +1,522 @@
+/* Arxiu: frontend/assets/css/style_perfil.css */
+/* Complementa style_base.css i style_common.css */
+
+.perfil-main-content {
+  padding-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 70px); 
+  padding-bottom: 40px;
+}
+
+.perfil-panel {
+  background-color: #1A1A2A;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 900px; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #E0E0E0;
+  position: relative; 
+}
+
+/* ... (Estils .boton-editar, .boton-principal, .boton-cancelar... es queden igual) ... */
+.perfil-edit-buttons {
+    position: absolute;
+    top: 25px; 
+    right: 30px; 
+    display: flex;
+    gap: 10px;
+    z-index: 10; 
+}
+.boton-editar, .boton-cancelar {
+    background-color: #3A3A4A;
+    color: #E0E0E0;
+    border: none;
+    padding: 8px 15px; 
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500; 
+    transition: background-color 0.2s ease;
+    display: inline-flex; 
+    align-items: center;
+    gap: 5px;
+}
+.boton-editar i, .boton-principal i { margin-right: 3px; } 
+.boton-editar:hover, .boton-cancelar:hover { background-color: #5A5A6A; }
+.boton-principal {
+    background-color: #8A2BE2;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.boton-principal:hover { background-color: #9932CC; }
+.boton-principal:active { transform: scale(0.98); }
+.boton-cancelar { background-color: #555; }
+.boton-cancelar:hover { background-color: #777; }
+
+/* ... (Estils .perfil-titulo, .perfil-header-section... es queden igual) ... */
+.perfil-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 30px; 
+  text-align: center;
+  border-bottom: 1px solid #8A2BE2;
+  padding-bottom: 15px; 
+  margin-top: 30px; 
+}
+.perfil-header-section {
+    display: flex;
+    gap: 40px; 
+    margin-bottom: 40px; 
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    padding-bottom: 30px; 
+}
+.perfil-foto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; 
+  flex-shrink: 0;
+}
+.perfil-foto {
+  width: 140px; 
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #8A2BE2;
+}
+.boton-foto {
+    background-color: #8A2BE2;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+    border: none;
+}
+.boton-foto:hover { background-color: #9932CC; }
+.perfil-info-basica { flex-grow: 1; }
+.perfil-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: baseline; 
+}
+.perfil-info-row .perfil-campo {
+    flex-basis: calc(50% - 12.5px);
+    margin-bottom: 0;
+    min-width: 200px;
+}
+.nickname-field {
+    flex-grow: 1;
+}
+.rank-global {
+    flex-basis: auto; 
+    text-align: right;
+    font-size: 1.2rem;
+    color: #00FFAB;
+    white-space: nowrap;
+    align-self: baseline; 
+    font-weight: 600;
+    margin-left: auto; 
+}
+.rank-global strong {
+    color: #A0A0B0;
+    font-weight: 500;
+    font-size: 0.8rem; 
+    display: inline-block; 
+    margin-right: 5px; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.perfil-campo label {
+    display: block; 
+    font-weight: 500;
+    font-size: 0.8rem; 
+    color: #A0A0B0;
+    margin-bottom: 4px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px;
+}
+.perfil-campo input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  background-color: #0F0F1A;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: #E0E0E0;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+.perfil-campo input:focus {
+    outline: none;
+    border-color: #8A2BE2;
+    background-color: #1a1e2e; 
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.3); 
+}
+.view-mode .perfil-campo input[data-editable] {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    padding-left: 0 !important; 
+    padding-right: 0 !important;
+    padding-top: 2px !important; 
+    padding-bottom: 2px !important;
+    pointer-events: none;
+    color: #E0E0E0;
+    box-shadow: none !important;
+    font-size: 1.05rem; 
+    height: auto;
+    min-height: 20px; 
+    line-height: 1.4;
+    width: auto;
+    display: inline-block; 
+    vertical-align: baseline; 
+}
+.view-mode .nickname-field label {
+    display: block;
+}
+.view-mode .perfil-campo:not(.nickname-field) label {
+    display: block; 
+    margin-bottom: 0; 
+}
+.view-mode .perfil-campo:not(.nickname-field) input[data-editable] {
+     margin-left: 8px; 
+}
+.view-mode .perfil-info-row {
+    align-items: baseline; 
+    margin-bottom: 10px; 
+}
+.view-mode .perfil-campo small { display: none; }
+.view-mode .edit-mode-item { display: none !important; }
+.view-mode .rank-global { display: inline-block; padding-top: 0; align-self: baseline; } 
+.view-mode .password-field { display: none !important; }
+.edit-mode .perfil-campo input[data-editable][readonly] { 
+    background-color: #2a2a3a !important;
+    color: #777 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    width: 100%;
+    display: block;
+    font-size: 1rem;
+    min-height: auto;
+    line-height: initial;
+    padding: 10px 14px; 
+}
+.edit-mode .perfil-campo input[data-editable]:not([readonly]) {
+     background-color: #0F0F1A;
+     border-color: rgba(255, 255, 255, 0.15);
+     color: #E0E0E0;
+     font-size: 1rem;
+     min-height: auto;
+     line-height: initial;
+     padding: 10px 14px;
+     pointer-events: auto;
+     width: 100%;
+     display: block;
+}
+.edit-mode .perfil-campo label { display: block; } 
+.edit-mode .perfil-campo small { display: block; margin-top: 4px; font-size: 0.8rem; }
+.edit-mode .edit-mode-item { display: inline-block !important; }
+.edit-mode .rank-global { display: none !important; }
+.edit-mode .password-field { display: block !important; }
+
+
+/* Seccions */
+.perfil-seccion { margin-bottom: 40px; }
+.perfil-seccion h2 {
+  font-size: 1.4rem;
+  color: #FFFFFF;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.perfil-seccion h2 i { color: #8A2BE2; font-size: 1.2rem; }
+
+/* Grid Jocs Jugats */
+.played-games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Mida una mica més gran */
+    gap: 20px; /* Més espai */
+}
+.played-game-card {
+    background-color: #0F0F1A;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    /* === CANVI: Afegim flex i alçada mínima === */
+    display: flex;
+    flex-direction: column;
+    min-height: 250px; /* Alçada mínima per a totes les targetes */
+}
+.played-game-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2); }
+.played-game-card img { display: block; width: 100%; height: 120px; object-fit: cover; }
+
+.game-card-info { 
+    padding: 12px; 
+    /* === CANVI: flex-grow fa que s'estiri === */
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column;
+}
+.game-card-info h3 { font-size: 0.95rem; color: #FFFFFF; margin: 0 0 8px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.game-card-info p { font-size: 0.8rem; color: #A0A0B0; margin: 3px 0; display: flex; align-items: center; gap: 6px; }
+.game-card-info p i { width: 12px; text-align: center; color: #8A2BE2; }
+
+/* === NOU: Estils pel 'footer' de la targeta (Valoració i Premium) === */
+.game-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px 12px 12px; /* Alineat amb .game-card-info */
+    margin-top: 10px; /* Espai entre info i footer */
+}
+.game-card-premium {
+    color: #8A2BE2;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.game-card-premium .fa-gem {
+    font-size: 0.8rem;
+    margin-right: 3px;
+}
+.game-card-rating {
+    color: #FFD700;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.game-card-rating .fa-star {
+    font-size: 0.9rem;
+    margin-right: 3px;
+}
+/* === FI DELS NOUS ESTILS === */
+
+/* Placeholder */
+.placeholder-text { color: #A0A0B0; font-style: italic; text-align: center; padding: 20px;}
+
+/* ... (Estils .perfil-info-item, .perfil-acciones... es queden igual) ... */
+.perfil-info-item { margin-bottom: 10px; font-size: 0.95rem; color: #C0C0C0; }
+.perfil-info-item strong { color: #E0E0E0; }
+.perfil-acciones {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+}
+.boton-peligro {
+    background-color: #d23b3b;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    width: auto;
+}
+.boton-peligro:hover { background-color: #b53030; }
+.boton-peligro:active { transform: scale(0.98); }
+.perfil-salida {
+    background-color: #3A3A4A;
+    color: #E0E0E0;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    width: auto;
+    font-family: 'Inter', sans-serif; 
+}
+.perfil-salida:hover { 
+    background-color: #5A5A6A; 
+    color: #FFFFFF;
+    text-decoration: none; 
+}
+.perfil-salida:active { transform: scale(0.98); }
+.form-message { padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; text-align: center; width: 100%; font-size: 0.9rem; }
+.error { background-color: rgba(248, 215, 218, 0.1); color: #f5c6cb; border: 1px solid rgba(245, 198, 203, 0.5); }
+.success { background-color: rgba(212, 237, 218, 0.1); color: #c3e6cb; border: 1px solid rgba(195, 230, 203, 0.5); }
+
+
+/* ... (Estils de Responsivitat es queden igual) ... */
+@media (max-width: 768px) {
+  .perfil-panel { padding: 25px 20px; max-width: 95%; }
+  .perfil-header-section { flex-direction: column; align-items: center; gap: 20px; }
+  .perfil-info-row { flex-direction: column; gap: 15px; }
+  .perfil-info-row .perfil-campo { flex-basis: 100%; }
+  .rank-global { text-align: center; padding-top: 0; margin-bottom: 15px; width: 100%; }
+  .played-games-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .perfil-acciones { flex-direction: column; gap: 15px; } 
+  .perfil-acciones button, .perfil-acciones a { width: 100%; } 
+}
+@media (max-width: 480px) {
+    .perfil-edit-buttons { position: static; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;} 
+    .perfil-titulo { margin-top: 0; }
+    .played-games-grid { grid-template-columns: 1fr 1fr; } 
+    .game-card-info p { font-size: 0.75rem; gap: 4px;} 
+}
+
+/* === Modals de Logout i Delete (Es queden igual) === */
+.logout-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 2000; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.logout-modal-backdrop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.logout-modal-content {
+  background-color: #1A1A2A;
+  padding: 30px 40px;
+  border-radius: 12px;
+  border: 1px solid #8A2BE2;
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+  text-align: center;
+  color: #E0E0E0;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.logout-modal-backdrop.visible .logout-modal-content {
+  transform: scale(1);
+}
+.logout-modal-content h3 {
+  margin: 20px 0 10px 0;
+  font-size: 1.5rem;
+  color: #FFFFFF;
+}
+.logout-modal-content p {
+  color: #A0A0B0;
+  font-size: 1rem;
+  margin: 0;
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #3A3A4A; 
+  border-top: 5px solid #8A2BE2; 
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.delete-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.delete-modal-backdrop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.delete-modal-content {
+  background-color: #1A1A2A;
+  padding: 30px 40px;
+  border-radius: 12px;
+  border: 1px solid #d23b3b; 
+  box-shadow: 0 0 30px rgba(210, 59, 59, 0.3);
+  width: 100%;
+  max-width: 450px;
+  text-align: left;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.delete-modal-backdrop.visible .delete-modal-content {
+  transform: scale(1);
+}
+.delete-modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #FFFFFF;
+}
+.delete-modal-content p {
+  color: #A0A0B0;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.delete-modal-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  background-color: #0F0F1A;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: #E0E0E0;
+  margin-bottom: 25px;
+  box-sizing: border-box; 
+}
+.delete-modal-input:focus {
+  outline: none;
+  border-color: #d23b3b;
+  box-shadow: 0 0 0 2px rgba(210, 59, 59, 0.3);
+}
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+.boton-peligro[disabled] {
+  background-color: #3A3A4A;
+  color: #777;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.boton-peligro[disabled]:hover {
+  background-color: #3A3A4A;
+}

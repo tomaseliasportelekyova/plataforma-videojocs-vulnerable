@@ -1,0 +1,301 @@
+/*
+ * Arxiu: frontend/assets/css/style_game_common.css
+ * * Aquest arxiu conté TOTS els estils comuns per a qualsevol joc:
+ * - Panell d'informació (#infoPartida)
+ * - Overlay d'inici / fi de partida (#game-overlay)
+ * - Overlay d'instruccions (#instructions-overlay)
+ * - Overlay de pausa (#pause-overlay)
+ * - Botons i estats comuns (.paused)
+*/
+
+/* === 1. PANELL D'INFORMACIÓ LATERAL === */
+.page-joc #infoPartida {
+  position: absolute;
+  top: 0;
+  /* 50% (centre) + 400px (mitja pantalla joc 800/2) + 30px (gap) */
+  left: calc(50% + 430px); 
+  
+  width: 250px; 
+  flex-shrink: 0; 
+  
+  /* Estils visuals */
+  background-color: rgba(26, 26, 42, 0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  color: #E0E0E0;
+  height: fit-content;
+  z-index: 10; 
+}
+.page-joc #infoPartida h2 {
+    font-size: 1.2rem;
+    color: #FFFFFF;
+    border-bottom: 1px solid #8A2BE2;
+    padding-bottom: 8px;
+    margin: 0 0 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.page-joc #infoPartida h2 i { color: #8A2BE2; }
+.page-joc .info-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #A0A0B0;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+}
+.page-joc .info-item:last-child { border-bottom: none; margin-bottom: 0; }
+.page-joc .info-item span { font-weight: 500; }
+.page-joc .info-item strong { color: #FFFFFF; font-size: 1rem; font-weight: 600; }
+
+
+/* === 2. OVERLAY D'INICI / FI DE PARTIDA === */
+.page-joc #game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 15, 26, 0.85);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 50; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    opacity: 1; 
+    visibility: visible; 
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.page-joc #game-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.page-joc .overlay-title {
+    font-size: 2.5rem;
+    color: #FFFFFF;
+    font-weight: 700;
+    text-shadow: 0 0 10px #8A2BE2;
+    margin-bottom: 10px; 
+    text-align: center; /* Afegit per si té <br> */
+}
+/* El botó #start-button reutilitza .play-button de style_dashboard.css */
+.page-joc #start-button {
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+}
+.page-joc .controls-info {
+    color: #A0A0B0;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Contenidor per 1 o 2 botons (inici/fi) */
+.page-joc #game-overlay .overlay-buttons-container {
+    display: flex;
+    flex-direction: column; /* Un sobre l'altre per defecte (inici) */
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+    align-items: center;
+}
+/* Estil pel segon botó (transparent/border) */
+.page-joc .play-button.secondary {
+    background-color: transparent;
+    color: #E0E0E0;
+    border: 1px solid #5A5A6A;
+    text-decoration: none; /* Per si és un <a> */
+    text-align: center;
+    box-sizing: border-box; 
+    justify-content: center; 
+}
+.page-joc .play-button.secondary:hover {
+    background-color: #3A3A4A;
+    border-color: #3A3A4A;
+}
+/* Canvi a fila si hi ha dos botons (quan guanyes) */
+.page-joc #game-overlay.show-two-buttons .overlay-buttons-container {
+    flex-direction: row; /* Un al costat de l'altre */
+    justify-content: center;
+    max-width: 450px;
+    gap: 20px;
+}
+.page-joc #game-overlay.show-two-buttons .play-button {
+    width: 100%; /* Ocupen meitat i meitat */
+}
+
+
+/* === 3. OVERLAY D'INSTRUCCIONS === */
+.page-joc #instructions-overlay {
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 60; 
+    width: 90%;
+    max-width: 450px;
+    background-color: rgba(15, 15, 26, 0.95); 
+    color: #E0E0E0;
+    border: 1px solid #8A2BE2; 
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.3);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.page-joc #instructions-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.page-joc #instructions-overlay h2 { font-size: 2rem; color: #FFFFFF; margin: 0; }
+.page-joc #instructions-overlay .instructions-text { font-size: 1rem; line-height: 1.6; margin: 0; }
+.page-joc #instructions-overlay .countdown-container { font-size: 1.2rem; color: #A0A0B0; }
+.page-joc #countdown-timer { font-size: 1.5rem; font-weight: bold; color: #00FFAB; }
+.page-joc #skip-instructions {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #A0A0B0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+.page-joc #skip-instructions:hover { color: #FFFFFF; }
+
+
+/* === 4. ESTAT DE PAUSA (Per animacions) === */
+.page-joc .paused {
+    animation-play-state: paused !important;
+}
+
+
+/* === 5. OVERLAY DE PAUSA (Menú ESC) === */
+.page-joc #pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 15, 26, 0.85); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 55; /* Per sobre de #game-overlay (50) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    opacity: 1; 
+    visibility: visible; 
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.page-joc #pause-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.page-joc #pause-overlay h2 {
+    font-size: 2.5rem;
+    color: #FFFFFF;
+    font-weight: 700;
+    text-shadow: 0 0 10px #8A2BE2;
+    margin: 0;
+}
+
+/* Contenidor dels botons de pausa */
+.page-joc .pause-menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 250px;
+}
+/* Botons de pausa */
+.page-joc .pause-button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif; 
+}
+.page-joc .pause-button i {
+    width: 16px; /* Alineació icones */
+}
+/* Variacions de color botons pausa */
+.page-joc .pause-button.primary {
+    background-color: #8A2BE2;
+    color: #fff;
+}
+.page-joc .pause-button.primary:hover {
+    background-color: #9932CC;
+}
+.page-joc .pause-button.secondary {
+    background-color: #3A3A4A;
+    color: #E0E0E0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.page-joc .pause-button.secondary:hover {
+    background-color: #5A5A6A;
+}
+.page-joc .pause-button.danger {
+    background-color: #d23b3b;
+    color: #fff;
+}
+.page-joc .pause-button.danger:hover {
+    background-color: #b53030;
+}
+
+
+/* === 6. RESPONSIVITAT (Elements Comuns) === */
+@media (max-width: 1100px) { 
+    .page-joc #infoPartida {
+        position: static; 
+        left: auto; 
+        top: auto; 
+        width: 100%; 
+        max-width: 800px; 
+        box-sizing: border-box;
+        margin: 20px auto 0 auto; 
+    }
+}
+@media (max-width: 900px) {
+    .page-joc #infoPartida { max-width: 700px; width: 90vw; }
+}
+@media (max-width: 600px) {
+    .page-joc #infoPartida { width: 98vw; padding: 12px; }
+    .page-joc .info-item { font-size: 0.85rem; }
+    .page-joc .info-item strong { font-size: 0.9rem; }
+    
+    .page-joc .overlay-title { font-size: 1.8rem; }
+    .page-joc #start-button { font-size: 1rem; padding: 0.8rem 1.5rem; }
+    .page-joc .controls-info { font-size: 0.8rem; padding: 0 10px; }
+    
+    .page-joc #game-overlay.show-two-buttons .overlay-buttons-container {
+        flex-direction: column; /* En mòbil, botons de victòria un sobre l'altre */
+        max-width: 300px;
+    }
+}

@@ -1,0 +1,327 @@
+/*
+ * Arxiu: frontend/assets/css/style_game_details.css
+ * * Nova versió inspirada en Amazon Luna
+*/
+
+/* --- Contingut Principal --- */
+.details-main-content {
+  padding-top: 100px; /* Baixem una mica més el contingut */
+  width: 100%;
+  max-width: 1200px; /* Més ample per al disseny tipus Luna */
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+/* --- 1. Secció Hero (La part de dalt) --- */
+.game-hero-section {
+  position: relative;
+  width: 100%;
+  height: 80vh; /* Ocupa el 80% de l'alçada de la pantalla */
+  min-height: 550px;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1A1A2A; /* Color de fons si la imatge falla */
+}
+
+/* Imatge de fons (a la dreta) */
+.hero-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Degradat fosc (d'esquerra a dreta) */
+.hero-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(15, 15, 26, 1) 15%, rgba(15, 15, 26, 0.9) 35%, rgba(15, 15, 26, 0.3) 60%, rgba(15, 15, 26, 0) 80%);
+  z-index: 2;
+}
+
+/* Contingut superposat (a l'esquerra) */
+.hero-content-overlay {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 480px; /* Amplada de la columna d'info */
+  padding: 40px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.hero-content-overlay h1 {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Ombra pel títol */
+}
+
+/* === CANVI: Botons Plans (Flat Design) === */
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.hero-actions .play-button {
+  text-decoration: none;
+  justify-content: center;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none; /* Sense vores */
+  color: #FFFFFF; /* Text blanc per a tots */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Ombra suau */
+}
+/* Efecte hover: créixer una mica */
+.hero-actions .play-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+/* Efecte :active (en clicar) */
+.hero-actions .play-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Color LILA (per defecte, premium, jugar) */
+.hero-actions .play-button {
+  background-color: #8A2BE2; /* Color sòlid */
+}
+.hero-actions .play-button:hover {
+  background-color: #9932CC; /* Una mica més clar al passar per sobre */
+}
+
+/* Color GRIS (secundari) */
+.hero-actions .play-button.secondary {
+  background-color: #4A4A5A; /* Color sòlid */
+  color: #E0E0E0;
+}
+.hero-actions .play-button.secondary:hover {
+  background-color: #5A5A6A;
+}
+
+/* Color VERD (canjear) */
+.hero-actions .play-button.redeem {
+  background-color: #28a745; /* Color sòlid */
+  color: #FFFFFF;
+}
+.hero-actions .play-button.redeem:hover {
+  background-color: #2ebf4e;
+}
+
+.hero-actions .play-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+/* === FI DEL CANVI === */
+
+
+/* --- Fila d'informació (Categoria, Temps, Jugadors) --- */
+.game-meta-info {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.meta-item {
+  color: #A0A0B0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.meta-item strong {
+  display: block;
+  color: #E0E0E0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* === CANVI: Botons Secundaris Plans === */
+.hero-secondary-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-top: 15px;
+}
+.wishlist-button, .rating-button {
+  height: 50px;
+  border-radius: 8px; 
+  cursor: pointer;
+  font-size: 1rem; 
+  transition: all 0.2s ease; /* Transició simple */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px;
+  font-weight: 600;
+  
+  /* Efecte pla */
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Ombra suau */
+}
+.wishlist-button:active, .rating-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Color GRIS (per defecte) */
+.wishlist-button, .rating-button {
+  background-color: #3A3A4A; /* Color sòlid */
+  color: #E0E0E0;
+}
+.wishlist-button:hover, .rating-button:hover {
+  background-color: #5A5A6A;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Color LILA (Wishlist activa) */
+.wishlist-button.in-wishlist {
+  background-color: #8A2BE2; /* Color sòlid */
+  color: #FFFFFF;
+}
+.wishlist-button.in-wishlist:hover {
+  background-color: #9932CC;
+}
+/* === FI DEL CANVI === */
+
+
+/* --- 2. Secció de Detalls (La part de sota) --- */
+.game-details-section {
+  padding: 40px 50px;
+  background-color: #1A1A2A; 
+  border-radius: 12px;
+  margin-top: 30px;
+}
+.game-details-section h2 {
+  font-size: 1.6rem;
+  color: #FFFFFF;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #8A2BE2;
+  padding-bottom: 10px;
+}
+.game-details-section p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #C0C0C0;
+  max-width: 80%; /* Més llegible */
+}
+
+/* --- Galeria de Screenshots --- */
+.screenshots-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 25px;
+}
+.screenshot-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease;
+}
+.screenshot-item img:hover {
+  transform: scale(1.03);
+}
+
+/* --- Modal de Valoració --- */
+.rating-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.rating-modal-backdrop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.rating-modal-content {
+  background-color: #1A1A2A;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #8A2BE2;
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.rating-modal-backdrop.visible .rating-modal-content {
+  transform: scale(1);
+}
+.rating-modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+}
+.rating-stars {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+.rating-stars .star {
+  font-size: 2.5rem;
+  color: #5A5A6A; /* Estrelles apagades */
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.rating-stars .star:hover {
+  transform: scale(1.2);
+}
+.rating-stars:hover .star { color: #5A5A6A; } 
+.rating-stars .star:hover ~ .star { color: #5A5A6A; } 
+.rating-stars .star.hover,
+.rating-stars .star.selected {
+  color: #FFD700;
+}
+.rating-stars:hover .star:hover { color: #FFD700; }
+.rating-stars:hover .star:hover ~ .star { color: #5A5A6A; }
+
+
+/* --- Responsivitat --- */
+@media (max-width: 900px) {
+  .details-main-content { padding-top: 90px; }
+  .game-hero-section { height: auto; min-height: 0; flex-direction: column; }
+  .hero-background-image { position: relative; width: 100%; height: 250px; }
+  .hero-gradient { background: linear-gradient(to top, rgba(15, 15, 26, 1) 5%, rgba(15, 15, 26, 0.8) 30%, rgba(15, 15, 26, 0) 70%); }
+  .hero-content-overlay { max-width: 100%; padding: 25px; margin-top: -50px; }
+  .hero-content-overlay h1 { font-size: 2.2rem; text-align: center; }
+  .hero-actions { align-items: center; }
+  .hero-actions .play-button { width: 100%; max-width: 350px; }
+  .hero-secondary-actions { justify-content: center; }
+  .game-meta-info { flex-wrap: wrap; justify-content: center; text-align: center; }
+
+  .game-details-section { padding: 25px; margin-top: 20px; }
+  .game-details-section p { max-width: 100%; }
+}
