@@ -112,7 +112,7 @@ ip a
 Des de la màquina host (la vostra màquina física), connecteu-vos via SSH:
 
 ```bash
-# Substituir IP_DE_LA_VM per la IP obtinguda anteriorment
+# Substituir IP_DEL_EQUIP per la IP obtinguda anteriorment
 # Substituir USUARI per el nom del teu usuari de la VM
 ssh USUARI@IP_DE_LA_VM
 ```
@@ -218,7 +218,7 @@ sudo systemctl status apache2
 ```
 
 ### Test de PHP
-Naveguem a `http://IP_DE_LA_VM/info.php` per veure la informació de PHP.
+Naveguem a `http://IP_DEL_EQUIP/info.php` per veure la informació de PHP.
 
 ---
 
@@ -444,41 +444,63 @@ CREATE USER IF NOT EXISTS 'usuariweb'@'%' IDENTIFIED BY 'password123';
 GRANT ALL PRIVILEGES ON plataforma_videojocs.* TO 'usuariweb'@'%';
 FLUSH PRIVILEGES;
 
+sudo mysql -u root <<'EOF'
+CREATE DATABASE IF NOT EXISTS plataforma_videojocs
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE plataforma_videojocs;
+
 CREATE TABLE IF NOT EXISTS usuaris (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  nickname VARCHAR(50) NOT NULL UNIQUE,
-  nom VARCHAR(100),
-  email VARCHAR(100) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  cognom VARCHAR(50) NOT NULL,
-  data_naixement DATE,
+  id INT NOT NULL AUTO_INCREMENT,
+  nickname VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  nom VARCHAR(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  email VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  password_hash VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  cognom VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  data_naixement DATE DEFAULT NULL,
   data_registre DATETIME DEFAULT CURRENT_TIMESTAMP,
-  photo VARCHAR(255) DEFAULT '../frontend/imatges/users/default_user.png'
-);
+  photo VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT '../frontend/imatges/users/default_user.png',
+  PRIMARY KEY (id),
+  UNIQUE KEY (email),
+  UNIQUE KEY (nickname)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO usuaris (id, nickname, nom, email, password_hash, cognom, data_naixement, data_registre, photo) VALUES
+(1,'Tommy1701','Tomas','tomas@elias.cat','Nolose123.','Elias','2025-10-03','2025-10-21 15:06:50','../frontend/imatges/users/user_1_1762358068.jpg'),
+(2,'Gabriele','Gabriele','gabriele@elias.cat','Nolose123.','Elias','2025-10-03','2025-10-21 15:07:29','../frontend/imatges/users/user_2_1761764281.png');
 
 CREATE TABLE IF NOT EXISTS jocs (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  nom_joc VARCHAR(50) NOT NULL,
-  descripcio TEXT,
+  id INT NOT NULL AUTO_INCREMENT,
+  nom_joc VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  descripcio TEXT COLLATE utf8mb4_unicode_ci,
+  categoria VARCHAR(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Joc',
+  temps_aprox_min INT DEFAULT 0,
+  num_jugadors VARCHAR(25) COLLATE utf8mb4_unicode_ci DEFAULT '1 jugador',
   valoracio DECIMAL(3,1) DEFAULT 0.0,
-  puntuacio_maxima INT DEFAULT 0,
-  nivells_totals INT DEFAULT 1,
   actiu TINYINT(1) DEFAULT 1,
-  cover_image_url VARCHAR(255)
-);
+  tipus ENUM('Free','Premium') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Premium',
+  cover_image_url VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  screenshots_json JSON DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO jocs (id, nom_joc, descripcio, categoria, temps_aprox_min, num_jugadors, valoracio, actiu, tipus, cover_image_url)
+VALUES (1,'Space Battle','Joc de combat espacial','Acció',45,'1 jugador',4.5,1,'Free','/frontend/imatges/jocs/spacebattle.png');
 
 CREATE TABLE IF NOT EXISTS nivells_joc (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   joc_id INT NOT NULL,
   nivell INT NOT NULL,
-  nom_nivell VARCHAR(50),
   configuracio_json JSON NOT NULL,
-  puntuacio_minima INT DEFAULT 0,
+  PRIMARY KEY (id),
   FOREIGN KEY (joc_id) REFERENCES jocs(id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO nivells_joc (joc_id, nivell, configuracio_json)
+VALUES (1,1,'{"enemics":5,"boss":false}'),
+       (1,2,'{"enemics":10,"boss":true}');
 
 CREATE TABLE IF NOT EXISTS partides (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   usuari_id INT NOT NULL,
   joc_id INT NOT NULL,
   nivell_jugat INT NOT NULL,
@@ -486,68 +508,42 @@ CREATE TABLE IF NOT EXISTS partides (
   data_partida DATETIME DEFAULT CURRENT_TIMESTAMP,
   durada_segons INT DEFAULT 0,
   dades_partida_json JSON,
+  PRIMARY KEY (id),
   FOREIGN KEY (usuari_id) REFERENCES usuaris(id),
   FOREIGN KEY (joc_id) REFERENCES jocs(id)
 );
 
-CREATE TABLE IF NOT EXISTS ranking_joc (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  id_joc INT NOT NULL,
-  id_usuari INT NOT NULL,
-  puntuacio INT NOT NULL,
-  data_registre DATE NOT NULL,
-  FOREIGN KEY (id_joc) REFERENCES jocs(id),
-  FOREIGN KEY (id_usuari) REFERENCES usuaris(id)
+INSERT INTO partides (usuari_id, joc_id, nivell_jugat, puntuacio_obtinguda, durada_segons, dades_partida_json)
+VALUES (1,1,1,300,120,'{"moviments":50}');
+
+CREATE TABLE IF NOT EXISTS progres_usuari (
+  id INT NOT NULL AUTO_INCREMENT,
+  usuari_id INT NOT NULL,
+  joc_id INT NOT NULL,
+  nivell_actual INT DEFAULT 1,
+  puntuacio_total INT DEFAULT 0,
+  data_ultima_partida DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (usuari_id) REFERENCES usuaris(id),
+  FOREIGN KEY (joc_id) REFERENCES jocs(id)
 );
 
+INSERT INTO progres_usuari (usuari_id, joc_id, nivell_actual, puntuacio_total)
+VALUES (1,1,2,300);
+
 CREATE TABLE IF NOT EXISTS wishlist (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   usuari_id INT NOT NULL,
   joc_id INT NOT NULL,
   data_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
   FOREIGN KEY (usuari_id) REFERENCES usuaris(id),
   FOREIGN KEY (joc_id) REFERENCES jocs(id)
 );
-
-CREATE TABLE IF NOT EXISTS progres_usuari (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  usuari_id INT NOT NULL,
-  joc_id INT NOT NULL,
-  nivell_actual INT NOT NULL,
-  puntuacio_total INT DEFAULT 0,
-  data_ultima_partida DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (usuari_id) REFERENCES usuaris(id),
-  FOREIGN KEY (joc_id) REFERENCES jocs(id)
-);
-
-INSERT INTO usuaris (nickname, nom, email, password_hash, cognom, data_naixement)
-VALUES ('gamer01', 'Joan', 'joan@example.com', 'hash123', 'Garcia', '2000-05-15'),
-       ('player02', 'Maria', 'maria@example.com', 'hash456', 'Lopez', '1998-08-22');
-
-INSERT INTO jocs (nom_joc, descripcio, valoracio, puntuacio_maxima, nivells_totals)
-VALUES ('Space Battle', 'Joc de combat espacial', 4.5, 1000, 10),
-       ('Puzzle Quest', 'Resol trencaclosques', 3.8, 500, 5);
-
-INSERT INTO nivells_joc (joc_id, nivell, nom_nivell, configuracio_json)
-VALUES (1, 1, 'Iniciació', '{"enemics":5,"boss":false}'),
-       (1, 2, 'Avançat', '{"enemics":10,"boss":true}'),
-       (2, 1, 'Trencaclosques fàcil', '{"peces":20}');
-
-INSERT INTO partides (usuari_id, joc_id, nivell_jugat, puntuacio_obtinguda, durada_segons, dades_partida_json)
-VALUES (1, 1, 1, 300, 120, '{"moviments":50}'),
-       (2, 2, 1, 450, 90, '{"peces_usades":18}');
-
-INSERT INTO ranking_joc (id_joc, id_usuari, puntuacio, data_registre)
-VALUES (1, 1, 300, CURDATE()),
-       (2, 2, 450, CURDATE());
 
 INSERT INTO wishlist (usuari_id, joc_id)
-VALUES (1, 2),
-       (2, 1);
+VALUES (1,1);
 
-INSERT INTO progres_usuari (usuari_id, joc_id, nivell_actual, puntuacio_total)
-VALUES (1, 1, 2, 300),
-       (2, 2, 1, 450);
 EOF
 
 echo "Verificant serveis..."
