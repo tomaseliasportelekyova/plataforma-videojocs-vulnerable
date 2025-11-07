@@ -70,7 +70,7 @@ Configurar l'adaptador de xarxa com a "Adaptador pont" per obtenir IP automàtic
 
 ---
 
-## 3. Configuració inicial del sistema
+## 1. Configuració inicial del sistema
 
 ### Actualització del sistema Ubuntu Server
 Un cop iniciada la VM, actualitzem el sistema:
@@ -123,7 +123,7 @@ Verificar la connexió SSH a la màquina servidor:
 uname -a
 ```
 
-## 4. Instal·lació Apache
+## 2. Instal·lació Apache
 
 ### Instal·lació del servidor web Apache
 Instal·lem Apache amb la configuració per defecte:
@@ -163,7 +163,7 @@ ip addr show
 
 ---
 
-## 5. Instal·lació PHP
+## 3. Instal·lació PHP
 
 ### Instal·lació de PHP i mòduls necessaris
 Instal·lem PHP amb els mòduls necessaris per al projecte web:
@@ -222,7 +222,7 @@ Naveguem a `http://IP_DE_LA_VM/info.php` per veure la informació de PHP.
 
 ---
 
-## 6. Instal·lació MySQL
+## 4. Instal·lació MySQL
 
 ### Instal·lació del servidor MySQL
 Instal·lem MySQL Server amb configuració per defecte:
@@ -330,7 +330,7 @@ SHOW GRANTS FOR 'usuariweb'@'%';
 EXIT;
 ```
 
-## 7. Configuració de permisos web
+## 5. Configuració de permisos web
 
 ### No modifiquem la configuració del propietari de la carpeta arrel de la pàgina web
 L'usuari per defecte de la carpeta web és ROOT.
@@ -348,7 +348,7 @@ Durant el desenvolupament inicial haureu de plantejar com podeu solucionar aques
 #sudo chmod -R 755 /var/www/html
 ```
 
-## 8. Verificació final del sistema
+## 6. Verificació final del sistema
 
 ### Test de tots els serveis
 Comprovem que tots els serveis estan actius:
